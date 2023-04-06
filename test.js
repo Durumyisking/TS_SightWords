@@ -2,9 +2,7 @@
 
 var p; // shortcut to reference prototypes
 var lib={};var ss={};var img={};
-lib.ssMetadata = [
-		{name:"test_atlas_1", frames: [[0,0,1280,720]]}
-];
+lib.ssMetadata = [];
 
 
 (lib.AnMovieClip = function(){
@@ -24,13 +22,6 @@ lib.ssMetadata = [
 	}
 }).prototype = p = new cjs.MovieClip();
 // symbols:
-
-
-
-(lib.sky = function() {
-	this.initialize(ss["test_atlas_1"]);
-	this.gotoAndStop(0);
-}).prototype = p = new cjs.Sprite();
 
 
 
@@ -107,11 +98,9 @@ if (reversed == null) { reversed = false; }
 		var Words = new Array();
 		
 		
-		
+		// 단어 load
 		function LoadWords ()
 		{
-			
-			
 			req.onload = function() { // 파일 불러오기 끝났을때 실행되는 함수
 				 
 				data = new Uint8Array(req.response);
@@ -150,10 +139,40 @@ if (reversed == null) { reversed = false; }
 			
 		}
 		
-		
+		// 초기화
 		function init ()
 		{
+			LoadResources();
+			
+			var bg = Resources.get('background');
+			stage.addChildAt(bg, 0);
+			
+			CreateWords();
+			
+		}
 		
+		
+		// 게임 불러오기 */
+		
+		
+		// 리소스 관리 */
+		function LoadResources()
+		{
+			var bitmap = null;
+			bitmap = new createjs.Bitmap("res/sky.png");
+			AddResource('background', bitmap);
+		}
+		
+		function AddResource(_key, _value)
+		{
+			Resources.set(_key, _value);
+		}
+		
+		
+		
+		// 단어 생성 및 배치
+		function CreateWords()
+		{
 			// 버튼 간 간격과 줄 간 간격
 			var buttonSpacing = 20;
 			var lineSpacing = 20;
@@ -211,7 +230,7 @@ if (reversed == null) { reversed = false; }
 				Words.push(newWord);
 			}
 		}
-		
+		//////////////////////////////////////////////
 		
 		
 		// 랜덤 단어 얻기*/
@@ -262,13 +281,17 @@ if (reversed == null) { reversed = false; }
 		  HoldingWord = event.target;
 		  HoldingWordPosition = new Vector2(HoldingWord.x, HoldingWord.y);
 		  HoldingWord.getChildAt(0).graphics.beginFill(BtnBackgroundColor_clicked).drawRoundRect(0,0,RectWidth,RectHeight,10,10);
+			
 		  
-		  var bounds = HoldingWord.getBounds();
+		  var bounds = HoldingWord.getBounds(); // 객체의 크기 절반만큼 offset 이동하여 단어 중앙으로 오게함
 		  offset = {
 			  x: bounds.width / 2
 			  , y: bounds.height / 2
 			  };
-		  //offset = {x: event.target.x - event.stageX, y: event.target.y - event.stageY};
+		  
+		  var parent = event.target.parent;
+		  parent.setChildIndex(event.target, parent.getNumChildren()-1); // 해당 객체의 인덱스를 최상위로 올려준다.
+		
 		}
 		
 		function dragButton(event) {
@@ -315,6 +338,9 @@ if (reversed == null) { reversed = false; }
 			
 			return textbox;
 		}
+		//////////////////////////////////////////
+		
+		
 		
 		
 		// 엑셀 파일 불러오기
@@ -327,16 +353,10 @@ if (reversed == null) { reversed = false; }
 	// actions tween:
 	this.timeline.addTween(cjs.Tween.get(this).call(this.frame_0).wait(1));
 
-	// 레이어_1
-	this.instance = new lib.sky();
-	this.instance.setTransform(0,0,1.5,1.5);
-
-	this.timeline.addTween(cjs.Tween.get(this.instance).wait(1));
-
 	this._renderFirstFrame();
 
 }).prototype = p = new lib.AnMovieClip();
-p.nominalBounds = new cjs.Rectangle(960,540,960,540);
+p.nominalBounds = new cjs.Rectangle(0,0,0,0);
 // library properties:
 lib.properties = {
 	id: '1299523199400343B751879641BC0ED0',
@@ -345,9 +365,7 @@ lib.properties = {
 	fps: 24,
 	color: "#FFFFFF",
 	opacity: 1.00,
-	manifest: [
-		{src:"images/test_atlas_1.png?1680763420475", id:"test_atlas_1"}
-	],
+	manifest: [],
 	preloads: []
 };
 
