@@ -2,7 +2,9 @@
 
 var p; // shortcut to reference prototypes
 var lib={};var ss={};var img={};
-lib.ssMetadata = [];
+lib.ssMetadata = [
+		{name:"test_atlas_1", frames: [[0,0,1280,720]]}
+];
 
 
 (lib.AnMovieClip = function(){
@@ -22,6 +24,13 @@ lib.ssMetadata = [];
 	}
 }).prototype = p = new cjs.MovieClip();
 // symbols:
+
+
+
+(lib.sky = function() {
+	this.initialize(ss["test_atlas_1"]);
+	this.gotoAndStop(0);
+}).prototype = p = new cjs.Sprite();
 
 
 
@@ -134,7 +143,6 @@ if (reversed == null) { reversed = false; }
 				// 게임 초기화
 				// word를 비동기로 불러오기 때문에 word 로딩이 완료되기전에 init이 호출된다.
 				init();
-				console.log(Words);
 			};
 		
 			req.send(); // 파일을 다시 불러오도록 요청한다 (이후에 재사용 위해) (일단 남겨둠)
@@ -145,28 +153,13 @@ if (reversed == null) { reversed = false; }
 		
 		function init ()
 		{
-			// 버튼 심볼 생성
-			var buttonSymbol = new createjs.Shape();
-			buttonSymbol.graphics.setStrokeStyle(10);
-			buttonSymbol.graphics.beginStroke("#33FFCC");
-			buttonSymbol.graphics.beginFill("#FFFF99")
-			buttonSymbol.graphics.drawRoundRect(0, 0, 350, 100, 10);
-			buttonSymbol.setBounds(0, 0, 350, 100);
-		
-			// 버튼 안의 텍스트 생성
-			var buttonText = new createjs.Text("버튼", "bold 50px Arial", "#000000");
-			buttonText.textAlign = "center";
-		
-		
-			buttonText.x = buttonSymbol.getBounds().width / 2;
-			buttonText.y = buttonSymbol.getBounds().height / 2 - 25;
 		
 			// 버튼 간 간격과 줄 간 간격
 			var buttonSpacing = 20;
 			var lineSpacing = 20;
 		
 			// 2줄에 버튼을 채우기 위한 변수
-			var buttonsPerLine = Math.floor((stage.canvas.width - buttonSpacing) / (350 + buttonSpacing));
+			var buttonsPerLine = Math.floor((stage.canvas.width - buttonSpacing) / (RectWidth + buttonSpacing));
 			var currentLine = 0;
 			var currentButton = 0;
 		
@@ -175,13 +168,24 @@ if (reversed == null) { reversed = false; }
 			{
 				// 버튼 생성
 				var button = new createjs.MovieClip();
-				button.addChild(buttonSymbol.clone());
-				button.addChild(buttonText.clone());
+				
+				// 버튼 심볼 생성
+				var buttonSymbol = CreateButtonSymbol();
+				
+				// 버튼 안의 텍스트 생성
+				var buttonText = CreateTextbox("버튼", "bold", "50", "Arial", "#000000", "center");
+		
+		
+				buttonText.x = buttonSymbol.getBounds().width / 2;
+				buttonText.y = buttonSymbol.getBounds().height / 2 - 25;		
+				
+				button.addChild(buttonSymbol);
+				button.addChild(buttonText);
 					
 		
 				// 버튼 위치 설정
-				button.x = buttonSpacing + (350 + buttonSpacing) * currentButton;
-				button.y = buttonSpacing + (100 + lineSpacing) * currentLine;
+				button.x = buttonSpacing + (RectWidth + buttonSpacing) * currentButton;
+				button.y = buttonSpacing + (RectHeight + lineSpacing) * currentLine;
 		
 				// 버튼을 stage에 추가
 				stage.addChild(button);
@@ -230,7 +234,7 @@ if (reversed == null) { reversed = false; }
 		function GetRandomVerb()
 		{
 			var RandomNumber;	
-			RandomNumber = Math.floor(Math.random() * WordNoun.length);
+			RandomNumber = Math.floor(Math.random() * WordVerb.length);
 			var verb = WordVerb[RandomNumber];
 			WordVerb.splice(RandomNumber , 1);
 		
@@ -240,7 +244,7 @@ if (reversed == null) { reversed = false; }
 		function GetRandomNoun()
 		{
 			var RandomNumber;	
-			RandomNumber = Math.floor(Math.random() * WordVerb.length);		
+			RandomNumber = Math.floor(Math.random() * WordNoun.length);		
 			var noun = WordNoun[RandomNumber];
 			WordNoun.splice(RandomNumber , 1);	
 		
@@ -255,6 +259,9 @@ if (reversed == null) { reversed = false; }
 		
 		function startDragging(event) {
 		  // 마우스 위치에서 버튼 위치까지의 거리 계산
+		  HoldingWord = event.target;
+		  HoldingWordPosition = new Vector2(HoldingWord.x, HoldingWord.y);
+		  HoldingWord.getChildAt(0).graphics.beginFill(BtnBackgroundColor_clicked).drawRoundRect(0,0,RectWidth,RectHeight,10,10);
 		  offset = {x: event.target.x - event.stageX, y: event.target.y - event.stageY};
 		}
 		
@@ -266,8 +273,42 @@ if (reversed == null) { reversed = false; }
 		
 		function stopDragging(event) {
 		  // 버튼 드래그가 끝난 후 실행할 코드
+			HoldingWord.x = HoldingWordPosition.x;
+			HoldingWord.y = HoldingWordPosition.y;
+			
+			HoldingWordPosition = Vector2(0, 0);
+			HoldingWord.getChildAt(0).graphics.beginFill(BtnBackgroundColor_none).drawRoundRect(0,0,RectWidth,RectHeight,10,10);
+		
+			HoldingWord = null;
 		}
 		///////////////////////////////////
+		
+		
+		
+		// 버튼 심볼 디자인 생성 */
+		function CreateButtonSymbol()
+		{
+			// 버튼 심볼 생성
+				var buttonSymbol = new createjs.Shape();
+				buttonSymbol.graphics.setStrokeStyle(10);
+				buttonSymbol.graphics.beginStroke(BtnStrokeColor);
+				buttonSymbol.graphics.beginFill(BtnBackgroundColor_none);
+				buttonSymbol.graphics.drawRoundRect(0, 0, RectWidth, RectHeight, 10);
+				buttonSymbol.setBounds(0, 0, RectWidth, RectHeight);
+			
+			return buttonSymbol;
+			
+		}
+		
+		function CreateTextbox(_text, _style, _size, _font, _color, _align)
+		{
+			var textform = _style + " " + _size+"px" + " "+_font;
+			
+			var textbox = new createjs.Text(_text,  textform, _color);
+			textbox.textAlign = _align;
+			
+			return textbox;
+		}
 		
 		
 		// 엑셀 파일 불러오기
@@ -280,10 +321,16 @@ if (reversed == null) { reversed = false; }
 	// actions tween:
 	this.timeline.addTween(cjs.Tween.get(this).call(this.frame_0).wait(1));
 
+	// 레이어_1
+	this.instance = new lib.sky();
+	this.instance.setTransform(0,0,1.5,1.5);
+
+	this.timeline.addTween(cjs.Tween.get(this.instance).wait(1));
+
 	this._renderFirstFrame();
 
 }).prototype = p = new lib.AnMovieClip();
-p.nominalBounds = new cjs.Rectangle(0,0,0,0);
+p.nominalBounds = new cjs.Rectangle(960,540,960,540);
 // library properties:
 lib.properties = {
 	id: '1299523199400343B751879641BC0ED0',
@@ -292,7 +339,9 @@ lib.properties = {
 	fps: 24,
 	color: "#FFFFFF",
 	opacity: 1.00,
-	manifest: [],
+	manifest: [
+		{src:"images/test_atlas_1.png?1680762609732", id:"test_atlas_1"}
+	],
 	preloads: []
 };
 
