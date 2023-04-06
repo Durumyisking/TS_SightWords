@@ -262,13 +262,19 @@ if (reversed == null) { reversed = false; }
 		  HoldingWord = event.target;
 		  HoldingWordPosition = new Vector2(HoldingWord.x, HoldingWord.y);
 		  HoldingWord.getChildAt(0).graphics.beginFill(BtnBackgroundColor_clicked).drawRoundRect(0,0,RectWidth,RectHeight,10,10);
-		  offset = {x: event.target.x - event.stageX, y: event.target.y - event.stageY};
+		  
+		  var bounds = HoldingWord.getBounds();
+		  offset = {
+			  x: bounds.width / 2
+			  , y: bounds.height / 2
+			  };
+		  //offset = {x: event.target.x - event.stageX, y: event.target.y - event.stageY};
 		}
 		
 		function dragButton(event) {
 		  // 마우스 위치에 따라 버튼 위치 변경
-		  event.target.x = event.stageX + offset.x;
-		  event.target.y = event.stageY + offset.y;
+		  event.target.x = event.stageX - offset.x;
+		  event.target.y = event.stageY - offset.y;
 		}
 		
 		function stopDragging(event) {
@@ -289,12 +295,12 @@ if (reversed == null) { reversed = false; }
 		function CreateButtonSymbol()
 		{
 			// 버튼 심볼 생성
-				var buttonSymbol = new createjs.Shape();
-				buttonSymbol.graphics.setStrokeStyle(10);
-				buttonSymbol.graphics.beginStroke(BtnStrokeColor);
-				buttonSymbol.graphics.beginFill(BtnBackgroundColor_none);
-				buttonSymbol.graphics.drawRoundRect(0, 0, RectWidth, RectHeight, 10);
-				buttonSymbol.setBounds(0, 0, RectWidth, RectHeight);
+			var buttonSymbol = new createjs.Shape();
+			buttonSymbol.graphics.setStrokeStyle(10);
+			buttonSymbol.graphics.beginStroke(BtnStrokeColor);
+			buttonSymbol.graphics.beginFill(BtnBackgroundColor_none);
+			buttonSymbol.graphics.drawRoundRect(0, 0, RectWidth, RectHeight, 10);
+			buttonSymbol.setBounds(0, 0, RectWidth, RectHeight);
 			
 			return buttonSymbol;
 			
@@ -340,7 +346,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/test_atlas_1.png?1680762609732", id:"test_atlas_1"}
+		{src:"images/test_atlas_1.png?1680763420475", id:"test_atlas_1"}
 	],
 	preloads: []
 };
