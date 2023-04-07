@@ -98,8 +98,39 @@ if (reversed == null) { reversed = false; }
 		var Words = new Array();
 		
 		
+		
+		// 게임 불러오기 */
+		
+		
+		// 리소스 관리 */
+		function LoadResources()
+		 {
+			AddResource('background', "res/sky.png");
+			AddResource('answerbox', "res/answerbox.png");	
+		}
+		
+		function AddResource(_key, _path, LoadWordscallback)
+		{
+			++ResourceCount;
+		
+			var bitmap = null;
+			bitmap = new createjs.Bitmap(_path);
+			bitmap.image.onload = onLoadComplete;
+			Resources.set(_key, bitmap);
+			
+			function onLoadComplete() 
+			{	
+				ResourceLoadedCount++;
+				if (ResourceLoadedCount >= ResourceCount)  // 리소스 로드 개수만큼 확인
+				{ 
+					LoadWords(init);
+				}
+			}
+		}
+		
+		
 		// 단어 load
-		function LoadWords ()
+		function LoadWords (Initcallback)
 		{
 			req.onload = function() { // 파일 불러오기 끝났을때 실행되는 함수
 				 
@@ -130,8 +161,12 @@ if (reversed == null) { reversed = false; }
 				}
 		
 				// 게임 초기화
-				// word를 비동기로 불러오기 때문에 word 로딩이 완료되기전에 init이 호출된다.
-				init();
+				// word를 비동기로 불러오기 때문에 word 로딩이 완료되기전에 callback이 호출되는걸 방지한다.
+				if (typeof Initcallback === 'function') 
+				{
+		
+					Initcallback();
+				}
 			};
 		
 			req.send(); // 파일을 다시 불러오도록 요청한다 (이후에 재사용 위해) (일단 남겨둠)
@@ -139,46 +174,13 @@ if (reversed == null) { reversed = false; }
 			
 		}
 		
+		
 		// 초기화
 		function init ()
 		{
 			CreateBackground();
 			CreateAnswerBox();	
 			CreateWords();
-		}
-		
-		
-		// 게임 불러오기 */
-		
-		
-		// 리소스 관리 */
-		function LoadResources(callback)
-		 {
-			 
-			AddResource('background', "res/sky.png");
-			AddResource('answerbox', "res/answerbox.png");	
-		}
-		
-		function AddResource(_key, _path)
-		{
-			++ResourceCount;
-		
-			var bitmap = null;
-			bitmap = new createjs.Bitmap(_path);
-			bitmap.image.onload = onLoadComplete;
-			Resources.set(_key, bitmap);
-			
-			function onLoadComplete() 
-			{	
-				ResourceLoadedCount++;
-				if (ResourceLoadedCount >= ResourceCount)  // 리소스 로드 개수만큼 확인
-				{ 
-					if (typeof callback === 'function') 
-					{
-						callback();
-					}
-				}
-			}
 		}
 		
 		
@@ -193,10 +195,9 @@ if (reversed == null) { reversed = false; }
 			var answerbox = Resources.get('answerbox');
 			stage.addChildAt(answerbox, 1);
 			
-			answerbox.x = (stage.canvas.width / 2) - (answerbox.width / 2);
+			answerbox.x = (stage.canvas.width / 2) - (answerbox.image.width / 2);
 			answerbox.y = stage.canvas.height / 2;
 			
-				console.log(Resources);
 		}
 		
 		// 단어 생성 및 배치
@@ -374,7 +375,7 @@ if (reversed == null) { reversed = false; }
 		LoadResources();
 		
 		// 엑셀 파일 불러오기
-		LoadWords();
+		//LoadWords(init);
 		
 		// stage 업데이트
 		stage.update();
