@@ -142,13 +142,9 @@ if (reversed == null) { reversed = false; }
 		// 초기화
 		function init ()
 		{
-			LoadResources();
-			
-			var bg = Resources.get('background');
-			stage.addChildAt(bg, 0);
-			
+			CreateBackground();
+			CreateAnswerBox();	
 			CreateWords();
-			
 		}
 		
 		
@@ -156,19 +152,52 @@ if (reversed == null) { reversed = false; }
 		
 		
 		// 리소스 관리 */
-		function LoadResources()
+		function LoadResources(callback)
+		 {
+			 
+			AddResource('background', "res/sky.png");
+			AddResource('answerbox', "res/answerbox.png");	
+		}
+		
+		function AddResource(_key, _path)
 		{
+			++ResourceCount;
+		
 			var bitmap = null;
-			bitmap = new createjs.Bitmap("res/sky.png");
-			AddResource('background', bitmap);
+			bitmap = new createjs.Bitmap(_path);
+			bitmap.image.onload = onLoadComplete;
+			Resources.set(_key, bitmap);
+			
+			function onLoadComplete() 
+			{	
+				ResourceLoadedCount++;
+				if (ResourceLoadedCount >= ResourceCount)  // 리소스 로드 개수만큼 확인
+				{ 
+					if (typeof callback === 'function') 
+					{
+						callback();
+					}
+				}
+			}
 		}
 		
-		function AddResource(_key, _value)
+		
+		function CreateBackground()
 		{
-			Resources.set(_key, _value);
+			var bg = Resources.get('background');
+			stage.addChildAt(bg, 0);
 		}
 		
-		
+		function CreateAnswerBox()
+		{
+			var answerbox = Resources.get('answerbox');
+			stage.addChildAt(answerbox, 1);
+			
+			answerbox.x = (stage.canvas.width / 2) - (answerbox.width / 2);
+			answerbox.y = stage.canvas.height / 2;
+			
+				console.log(Resources);
+		}
 		
 		// 단어 생성 및 배치
 		function CreateWords()
@@ -189,7 +218,7 @@ if (reversed == null) { reversed = false; }
 				var button = new createjs.MovieClip();
 				
 				// 버튼 심볼 생성
-				var buttonSymbol = CreateButtonSymbol();
+				var buttonSymbol = CreateShape(10, BtnStrokeColor, BtnBackgroundColor_none, RectWidth, RectHeight, 10);
 				
 				// 버튼 안의 텍스트 생성
 				var buttonText = CreateTextbox("버튼", "bold", "50", "Arial", "#000000", "center");
@@ -315,17 +344,17 @@ if (reversed == null) { reversed = false; }
 		
 		
 		// 버튼 심볼 디자인 생성 */
-		function CreateButtonSymbol()
+		function CreateShape(_StrokeSize, _StrokeColor, _FillColor, Width, Height, RoundSize)
 		{
 			// 버튼 심볼 생성
-			var buttonSymbol = new createjs.Shape();
-			buttonSymbol.graphics.setStrokeStyle(10);
-			buttonSymbol.graphics.beginStroke(BtnStrokeColor);
-			buttonSymbol.graphics.beginFill(BtnBackgroundColor_none);
-			buttonSymbol.graphics.drawRoundRect(0, 0, RectWidth, RectHeight, 10);
-			buttonSymbol.setBounds(0, 0, RectWidth, RectHeight);
+			var newShape = new createjs.Shape();
+			newShape.graphics.setStrokeStyle(_StrokeSize);
+			newShape.graphics.beginStroke(_StrokeColor);
+			newShape.graphics.beginFill(_FillColor);
+			newShape.graphics.drawRoundRect(0, 0, Width, Height, RoundSize);
+			newShape.setBounds(0, 0, Width, Height);
 			
-			return buttonSymbol;
+			return newShape;
 			
 		}
 		
@@ -341,7 +370,8 @@ if (reversed == null) { reversed = false; }
 		//////////////////////////////////////////
 		
 		
-		
+		// 이미지 불러오기
+		LoadResources();
 		
 		// 엑셀 파일 불러오기
 		LoadWords();
