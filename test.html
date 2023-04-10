@@ -14,7 +14,7 @@
 <title>test</title>
 <!-- write your code here -->
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
-<script src="test.js?1681109173257"></script>
+<script src="test.js?1681111380887"></script>
 <script>
 // Global Scripts
 	// CreateJS 라이브러리를 사용합니다.
@@ -30,6 +30,8 @@ const BtnStrokeColor = "#33FFCCFF";
 const RectWidth = 350;
 const RectHeight = 100;
 const Resources = new Map();
+var btnCorrect;
+var btnWrong;
 var ResourceCount = 0;
 var ResourceLoadedCount = 0;
  var data; // xml request의 응답을 받을 데이곳
@@ -68,9 +70,10 @@ class Word
 }
 class AnswerBox 
 {
-	constructor(_answerBox,  _CenterPos, _Scale)
+	constructor(_answerBox, _WorldPos ,_CenterPos, _Scale)
 	{
 		this.answerBox = _answerBox;
+		this.WorldPos =  _WorldPos;	
 		this.CenterPos = _CenterPos;		
 		this.Scale = _Scale;		
 		this.Words = new Map();

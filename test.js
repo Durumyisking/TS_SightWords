@@ -107,6 +107,8 @@ if (reversed == null) { reversed = false; }
 		 {
 			AddResource('background', "res/sky.png");
 			AddResource('answerbox', "res/answerbox.png");	
+			AddResource('correct', "res/correct.png");	
+			AddResource('wrong', "res/wrong.png");	
 		}
 		
 		function AddResource(_key, _path, LoadWordscallback)
@@ -179,6 +181,7 @@ if (reversed == null) { reversed = false; }
 		{
 			CreateBackground();
 			CreateAnswerBox();	
+			CreateButtons();
 			CreateWords();
 		}
 		
@@ -201,19 +204,39 @@ if (reversed == null) { reversed = false; }
 			bound.height *= 1.5;
 		
 			
-			answerbox.x = (stage.canvas.width / 2) - (bound.width / 2);
+			answerbox.x = (stage.canvas.width / 2) - (bound.width / 2) - 250;
 			answerbox.y = stage.canvas.height / 2 + 200;
 			
+			const answerBoxWorldPos = new Vector2(answerbox.x, answerbox.y);
 			const answerBoxCenterPos = new Vector2(answerbox.x + (bound.width / 2), answerbox.y + (bound.height / 2));
 			const answerBoxscale = new Vector2(bound.width, bound.height);
 		
 			GameAnswerBox = new AnswerBox
 			(
 				answerbox, 
+				answerBoxWorldPos,
 				answerBoxCenterPos, 
 				answerBoxscale
 			);
 		}
+		
+		function CreateButtons()
+		{
+			btnCorrect = Resources.get('correct');
+			btnWrong = Resources.get('wrong');
+			
+			btnCorrect.x = GameAnswerBox.CenterPos.x + GameAnswerBox.Scale.x / 2 + 20;
+			btnCorrect.y = GameAnswerBox.WorldPos.y + 20;
+			
+			var bound = btnCorrect.getBounds();
+			btnWrong.x = btnCorrect.x + bound.width + 20;
+			btnWrong.y = GameAnswerBox.WorldPos.y + 20;
+		
+			
+			stage.addChildAt(btnCorrect, 1);
+			stage.addChildAt(btnWrong, 1);
+		}
+		
 		
 		// 단어 생성 및 배치
 		function CreateWords()
@@ -325,7 +348,6 @@ if (reversed == null) { reversed = false; }
 					GameAnswerBox.AddWord(HoldingWord);
 				}
 				var bound = HoldingWord.getBounds();
-				console.log(bound);
 				HoldingWord.Symbol.graphics.clear();
 				HoldingWord.Symbol.graphics.setStrokeStyle(0);
 				HoldingWord.Symbol.graphics.beginStroke(White);	
