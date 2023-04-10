@@ -14,7 +14,7 @@
 <title>test</title>
 <!-- write your code here -->
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
-<script src="test.js?1680852163287"></script>
+<script src="test.js?1681105802151"></script>
 <script>
 // Global Scripts
 	// CreateJS 라이브러리를 사용합니다.
@@ -40,25 +40,63 @@ function Vector2(_x, _y)
 {
 	this.x = _x;
 	this.y = _y;
-	return this;
 }
 class Word 
 {
-	constructor(_button,  _WorldPos, _WorldSheetMatrix)
+	constructor(_button,  _WorldPos, _WorldSheetMatrix, _symbol,_textbox)
 	{
 		this.button = _button;
 		this.WorldPos = _WorldPos;		
 		this.WorldSheetMatrix = _WorldSheetMatrix;
 		//this.WordType = _WordType;		
-		this.word = " ";
-	}
-	SetWord(_word)
-	{
-		this.word = _word;
+		this.word = _textbox;
+		this.word.text = GetRandomWord();
+		this.button.addChild(_symbol);
+		this.button.addChild(_textbox);
 	}
 }
+class AnswerBox 
+{
+	constructor(_answerBox,  _CenterPos, _Scale)
+	{
+		this.answerBox = _answerBox;
+		this.CenterPos = _CenterPos;		
+		this.Scale = _Scale;		
+	}	
+}
+// 랜덤 단어 얻기*/
+function GetRandomWord()
+{
+	var WordType = Math.floor(Math.random() * 2);	
+	if(0 == WordType) // verb
+	{		
+		return GetRandomVerb();
+	}
+	else if (1== WordType) // noun
+	{
+		return GetRandomNoun();
+	}
+}
+function GetRandomVerb()
+{
+	var RandomNumber;	
+	RandomNumber = Math.floor(Math.random() * WordVerb.length);
+	var verb = WordVerb[RandomNumber];
+	WordVerb.splice(RandomNumber , 1);
+	return verb;
+}
+function GetRandomNoun()
+{
+	var RandomNumber;	
+	RandomNumber = Math.floor(Math.random() * WordNoun.length);		
+	var noun = WordNoun[RandomNumber];
+	WordNoun.splice(RandomNumber , 1);	
+	return noun;
+}
+////////////////////////////////////////
 var WordNoun = new Array();
-var WordVerb = new Array();</script>
+var WordVerb = new Array();
+var GameAnswerBox;</script>
 <script type='text/javascript' src='https://code.createjs.com/1.0.0/easeljs.min.js'></script>
 <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.3/xlsx.full.min.js'></script>
 <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js'></script>

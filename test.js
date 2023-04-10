@@ -164,7 +164,6 @@ if (reversed == null) { reversed = false; }
 				// word를 비동기로 불러오기 때문에 word 로딩이 완료되기전에 callback이 호출되는걸 방지한다.
 				if (typeof Initcallback === 'function') 
 				{
-		
 					Initcallback();
 				}
 			};
@@ -195,9 +194,25 @@ if (reversed == null) { reversed = false; }
 			var answerbox = Resources.get('answerbox');
 			stage.addChildAt(answerbox, 1);
 			
-			answerbox.x = (stage.canvas.width / 2) - (answerbox.image.width / 2);
-			answerbox.y = stage.canvas.height / 2;
+			answerbox.scaleX = 1.75;	
+			answerbox.scaleY = 1.5;
+			var bound = answerbox.getBounds();
+			bound.width *= 1.75;
+			bound.height *= 1.5;
+		
 			
+			answerbox.x = (stage.canvas.width / 2) - (bound.width / 2);
+			answerbox.y = stage.canvas.height / 2 + 200;
+			
+			const answerBoxCenterPos = new Vector2(answerbox.x + (bound.width / 2), answerbox.y + (bound.height / 2));
+			const answerBoxscale = new Vector2(bound.width, bound.height);
+		
+			GameAnswerBox = new AnswerBox
+			(
+				answerbox, 
+				answerBoxCenterPos, 
+				answerBoxscale
+			);
 		}
 		
 		// 단어 생성 및 배치
@@ -227,14 +242,23 @@ if (reversed == null) { reversed = false; }
 		
 				buttonText.x = buttonSymbol.getBounds().width / 2;
 				buttonText.y = buttonSymbol.getBounds().height / 2 - 25;		
-				
-				button.addChild(buttonSymbol);
-				button.addChild(buttonText);
-					
+				buttonText.text = GetRandomWord();
 		
 				// 버튼 위치 설정
 				button.x = buttonSpacing + (RectWidth + buttonSpacing) * currentButton;
 				button.y = buttonSpacing + (RectHeight + lineSpacing) * currentLine;
+				
+				button.DefaultPos = new Vector2(button.x, button.y);
+				button.Symbol = buttonSymbol;
+				button.Textbox = buttonText;
+				
+				button.on("mousedown", startDragging); // on은 createjs에서 addeventlistener 간편하게 사용하기 위해 만든거
+				button.on("pressmove", dragButton);
+				button.on("pressup", stopDragging);
+			
+				
+				button.addChild(buttonSymbol);
+				button.addChild(buttonText);
 		
 				// 버튼을 stage에 추가
 				stage.addChild(button);
@@ -245,61 +269,13 @@ if (reversed == null) { reversed = false; }
 				{
 					currentLine++;
 					currentButton = 0;
-				}
+				}		
 		
-				// button에 랜덤 word 지정
-				button.children[1].text = GetRandomWord();
-			
-				button.on("mousedown", startDragging); // on은 createjs에서 addeventlistener 간편하게 사용하기 위해 만든거
-				button.on("pressmove", dragButton);
-				button.on("pressup", stopDragging);
-		
-				var newWord = new Word(button, Vector2(button.x, button.y), Vector2(i, currentLine));
-				newWord.SetWord(button.children[1].text);
-			
-				Words.push(newWord);
 			}
 		}
 		//////////////////////////////////////////////
 		
 		
-		// 랜덤 단어 얻기*/
-		
-		function GetRandomWord()
-		{
-			var WordType = Math.floor(Math.random() * 2);	
-			
-			if(0 == WordType) // verb
-			{		
-				return GetRandomVerb();
-			}
-			else if (1== WordType) // noun
-			{
-				return GetRandomNoun();
-			}
-			
-		}
-		
-		function GetRandomVerb()
-		{
-			var RandomNumber;	
-			RandomNumber = Math.floor(Math.random() * WordVerb.length);
-			var verb = WordVerb[RandomNumber];
-			WordVerb.splice(RandomNumber , 1);
-		
-			return verb;
-		}
-		
-		function GetRandomNoun()
-		{
-			var RandomNumber;	
-			RandomNumber = Math.floor(Math.random() * WordNoun.length);		
-			var noun = WordNoun[RandomNumber];
-			WordNoun.splice(RandomNumber , 1);	
-		
-			return noun;
-		}
-		////////////////////////////////////////
 		
 		
 		// 드래그 이벤트*/
@@ -309,7 +285,7 @@ if (reversed == null) { reversed = false; }
 		function startDragging(event) {
 		  // 마우스 위치에서 버튼 위치까지의 거리 계산
 		  HoldingWord = event.target;
-		  HoldingWordPosition = new Vector2(HoldingWord.x, HoldingWord.y);
+		  //HoldingWordPosition = new Vector2(HoldingWord.x, HoldingWord.y);
 		  HoldingWord.getChildAt(0).graphics.beginFill(BtnBackgroundColor_clicked).drawRoundRect(0,0,RectWidth,RectHeight,10,10);
 			
 		  
@@ -332,8 +308,27 @@ if (reversed == null) { reversed = false; }
 		
 		function stopDragging(event) {
 		  // 버튼 드래그가 끝난 후 실행할 코드
-			HoldingWord.x = HoldingWordPosition.x;
-			HoldingWord.y = HoldingWordPosition.y;
+			
+			var HoldingWordCenterPos = new Vector2(HoldingWord.x, HoldingWord.y);
+			var bounds = HoldingWord.getBounds();
+			HoldingWordCenterPos.x += bounds.width / 2;
+			HoldingWordCenterPos.y += bounds.height / 2;
+			
+		console.log(HoldingWordCenterPos.x )
+		console.log(GameAnswerBox.CenterPos.x + GameAnswerBox.Scale.x / 2)
+			
+			if((HoldingWordCenterPos.x < (GameAnswerBox.CenterPos.x + GameAnswerBox.Scale.x / 2)) &&
+				(HoldingWordCenterPos.x > (GameAnswerBox.CenterPos.x - GameAnswerBox.Scale.x / 2))&&
+				(HoldingWordCenterPos.y < (GameAnswerBox.CenterPos.y + GameAnswerBox.Scale.y / 2)) &&
+				(HoldingWordCenterPos.y > (GameAnswerBox.CenterPos.y - GameAnswerBox.Scale.y / 2)))
+			{
+				console.log("in")
+			}
+			else
+			{
+				HoldingWord.x = HoldingWord.DefaultPos.x;
+				HoldingWord.y = HoldingWord.DefaultPos.y;
+			}
 			
 			HoldingWordPosition = Vector2(0, 0);
 			HoldingWord.getChildAt(0).graphics.beginFill(BtnBackgroundColor_none).drawRoundRect(0,0,RectWidth,RectHeight,10,10);
@@ -369,6 +364,20 @@ if (reversed == null) { reversed = false; }
 			return textbox;
 		}
 		//////////////////////////////////////////
+		
+		
+		
+		// 이미지 리사이징 함수
+		function resizeImage(image, newWidth, newHeight) {
+		  var canvas = document.createElement('canvas');
+		  canvas.width = newWidth;
+		  canvas.height = newHeight;
+		
+		  var context = canvas.getContext('2d');
+		  context.drawImage(image, 0, 0, newWidth, newHeight);
+			
+		  return canvas.toDataURL();
+		}
 		
 		
 		// 이미지 불러오기
