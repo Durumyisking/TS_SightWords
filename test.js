@@ -286,7 +286,10 @@ if (reversed == null) { reversed = false; }
 		  // 마우스 위치에서 버튼 위치까지의 거리 계산
 		  HoldingWord = event.target;
 		  //HoldingWordPosition = new Vector2(HoldingWord.x, HoldingWord.y);
-		  HoldingWord.getChildAt(0).graphics.beginFill(BtnBackgroundColor_clicked).drawRoundRect(0,0,RectWidth,RectHeight,10,10);
+			HoldingWord.Symbol.graphics.clear();
+		  HoldingWord.Symbol.graphics.setStrokeStyle(10);
+		  HoldingWord.Symbol.graphics.beginStroke(BtnStrokeColor);	
+		  HoldingWord.Symbol.graphics.beginFill(BtnBackgroundColor_clicked).drawRoundRect(0,0,RectWidth,RectHeight,10,10);
 			
 		  
 		  var bounds = HoldingWord.getBounds(); // 객체의 크기 절반만큼 offset 이동하여 단어 중앙으로 오게함
@@ -309,29 +312,39 @@ if (reversed == null) { reversed = false; }
 		function stopDragging(event) {
 		  // 버튼 드래그가 끝난 후 실행할 코드
 			
-			var HoldingWordCenterPos = new Vector2(HoldingWord.x, HoldingWord.y);
-			var bounds = HoldingWord.getBounds();
-			HoldingWordCenterPos.x += bounds.width / 2;
-			HoldingWordCenterPos.y += bounds.height / 2;
+			var CenterPos = new GetCenterPos(HoldingWord);
+		
 			
-		console.log(HoldingWordCenterPos.x )
-		console.log(GameAnswerBox.CenterPos.x + GameAnswerBox.Scale.x / 2)
-			
-			if((HoldingWordCenterPos.x < (GameAnswerBox.CenterPos.x + GameAnswerBox.Scale.x / 2)) &&
-				(HoldingWordCenterPos.x > (GameAnswerBox.CenterPos.x - GameAnswerBox.Scale.x / 2))&&
-				(HoldingWordCenterPos.y < (GameAnswerBox.CenterPos.y + GameAnswerBox.Scale.y / 2)) &&
-				(HoldingWordCenterPos.y > (GameAnswerBox.CenterPos.y - GameAnswerBox.Scale.y / 2)))
+			if((CenterPos.x < (GameAnswerBox.CenterPos.x + GameAnswerBox.Scale.x / 2)) &&
+				(CenterPos.x > (GameAnswerBox.CenterPos.x - GameAnswerBox.Scale.x / 2))&&
+				(CenterPos.y < (GameAnswerBox.CenterPos.y + GameAnswerBox.Scale.y / 2)) &&
+				(CenterPos.y > (GameAnswerBox.CenterPos.y - GameAnswerBox.Scale.y / 2)))
 			{
-				console.log("in")
-			}
+				if(null == GameAnswerBox.FindWord(HoldingWord.Textbox.text))
+				{
+					GameAnswerBox.AddWord(HoldingWord);
+				}
+				var bound = HoldingWord.getBounds();
+				console.log(bound);
+				HoldingWord.Symbol.graphics.clear();
+				HoldingWord.Symbol.graphics.setStrokeStyle(0);
+				HoldingWord.Symbol.graphics.beginStroke(White);	
+				HoldingWord.Symbol.graphics.beginFill(White).drawRect(bound.width / 4, bound.height / 4, 200, 50);	
+				}
 			else
 			{
+				if(null != GameAnswerBox.FindWord(HoldingWord.Textbox.text))
+				{
+					GameAnswerBox.DeleteWord(HoldingWord);
+				}
 				HoldingWord.x = HoldingWord.DefaultPos.x;
 				HoldingWord.y = HoldingWord.DefaultPos.y;
+				HoldingWord.Symbol.graphics.beginFill(BtnBackgroundColor_none).drawRoundRect(0, 0, RectWidth, RectHeight, 10,10);	
 			}
-			
+			//console.log(GameAnswerBox.Words);
+		
 			HoldingWordPosition = Vector2(0, 0);
-			HoldingWord.getChildAt(0).graphics.beginFill(BtnBackgroundColor_none).drawRoundRect(0,0,RectWidth,RectHeight,10,10);
+		
 		
 			HoldingWord = null;
 		}

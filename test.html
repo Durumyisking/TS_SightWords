@@ -14,7 +14,7 @@
 <title>test</title>
 <!-- write your code here -->
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
-<script src="test.js?1681105802151"></script>
+<script src="test.js?1681109173257"></script>
 <script>
 // Global Scripts
 	// CreateJS 라이브러리를 사용합니다.
@@ -22,9 +22,11 @@ var stage = new createjs.Stage("canvas");
 var req = new XMLHttpRequest(); // 비동기 처리를 위한 객체
 req.open("GET", "Word/words.xlsx", true); // 파일 불러오기
 req.responseType = "arraybuffer";
-const BtnBackgroundColor_none = "#FFFF99";
-const BtnBackgroundColor_clicked = "#FFCC00";
-const BtnStrokeColor = "#33FFCC";
+const White = "#FFFFFFFF";
+const Transparent = "#FFFFFF00";
+const BtnBackgroundColor_none = "#FFFF99FF";
+const BtnBackgroundColor_clicked = "#FFCC00FF";
+const BtnStrokeColor = "#33FFCCFF";
 const RectWidth = 350;
 const RectHeight = 100;
 const Resources = new Map();
@@ -40,6 +42,15 @@ function Vector2(_x, _y)
 {
 	this.x = _x;
 	this.y = _y;
+}
+function GetCenterPos(_obj)
+{
+	var CenterPos = new Vector2(_obj.x, _obj.y);
+	var bounds = _obj.getBounds();
+	CenterPos.x += bounds.width / 2;
+	CenterPos.y += bounds.height / 2;
+	this.x = CenterPos.x;
+	this.y = CenterPos.y;
 }
 class Word 
 {
@@ -62,7 +73,21 @@ class AnswerBox
 		this.answerBox = _answerBox;
 		this.CenterPos = _CenterPos;		
 		this.Scale = _Scale;		
-	}	
+		this.Words = new Map();
+	}
+	AddWord(_button)
+	{
+		this.Words.set(_button.Textbox.text, _button);
+	}
+	DeleteWord(_button)
+	{
+		this.Words.delete(_button.Textbox.text);
+	}
+	FindWord(_key)
+	{
+		var rst = this.Words.get(_key);
+		return rst;
+	}
 }
 // 랜덤 단어 얻기*/
 function GetRandomWord()
