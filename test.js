@@ -105,10 +105,10 @@ if (reversed == null) { reversed = false; }
 		// 리소스 관리 */
 		function LoadResources()
 		 {
-			AddResource('background', "res/sky.png");
-			AddResource('answerbox', "res/answerbox.png");	
-			AddResource('correct', "res/correct.png");	
-			AddResource('wrong', "res/wrong.png");	
+			AddResource('background', "res/images/sky.png");
+			AddResource('answerbox', "res/images/answerbox.png");	
+			AddResource('correct', "res/images/correct.png");	
+			AddResource('wrong', "res/images/wrong.png");	
 		}
 		
 		function AddResource(_key, _path, LoadWordscallback)
@@ -237,6 +237,7 @@ if (reversed == null) { reversed = false; }
 			stage.addChildAt(btnWrong, 1);
 			
 			btnWrong.on("pressup", ClearAnswerbox);
+			btnCorrect.on("pressup", Correct);
 		}
 		
 		
@@ -314,7 +315,7 @@ if (reversed == null) { reversed = false; }
 		
 		
 		
-		// 드래그 이벤트*/
+		// 마우스 이벤트*/
 		
 		var offset;
 		
@@ -378,7 +379,11 @@ if (reversed == null) { reversed = false; }
 		
 		function ClearAnswerbox()
 		{
-			GameAnswerBox.ClearWord()
+			GameAnswerBox.ClearWord("wrong")
+		}
+		function Correct()
+		{
+			GameAnswerBox.ClearWord("correct");	
 		}
 		
 		///////////////////////////////////
