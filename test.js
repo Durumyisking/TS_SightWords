@@ -235,6 +235,8 @@ if (reversed == null) { reversed = false; }
 			
 			stage.addChildAt(btnCorrect, 1);
 			stage.addChildAt(btnWrong, 1);
+			
+			btnWrong.on("pressup", ClearAnswerbox);
 		}
 		
 		
@@ -298,6 +300,17 @@ if (reversed == null) { reversed = false; }
 		}
 		//////////////////////////////////////////////
 		
+		function IsInAnswerBox(pos)
+		{
+			if((pos.x < (GameAnswerBox.CenterPos.x + GameAnswerBox.Scale.x / 2)) &&
+				(pos.x > (GameAnswerBox.CenterPos.x - GameAnswerBox.Scale.x / 2))&&
+				(pos.y < (GameAnswerBox.CenterPos.y + GameAnswerBox.Scale.y / 2)) &&
+				(pos.y > (GameAnswerBox.CenterPos.y - GameAnswerBox.Scale.y / 2)))
+			{
+				return true;
+			}
+			return false;
+		}
 		
 		
 		
@@ -309,10 +322,7 @@ if (reversed == null) { reversed = false; }
 		  // 마우스 위치에서 버튼 위치까지의 거리 계산
 		  HoldingWord = event.target;
 		  //HoldingWordPosition = new Vector2(HoldingWord.x, HoldingWord.y);
-			HoldingWord.Symbol.graphics.clear();
-		  HoldingWord.Symbol.graphics.setStrokeStyle(10);
-		  HoldingWord.Symbol.graphics.beginStroke(BtnStrokeColor);	
-		  HoldingWord.Symbol.graphics.beginFill(BtnBackgroundColor_clicked).drawRoundRect(0,0,RectWidth,RectHeight,10,10);
+		  WordDesign_Clicked(HoldingWord);
 			
 		  
 		  var bounds = HoldingWord.getBounds(); // 객체의 크기 절반만큼 offset 이동하여 단어 중앙으로 오게함
@@ -338,20 +348,14 @@ if (reversed == null) { reversed = false; }
 			var CenterPos = new GetCenterPos(HoldingWord);
 		
 			
-			if((CenterPos.x < (GameAnswerBox.CenterPos.x + GameAnswerBox.Scale.x / 2)) &&
-				(CenterPos.x > (GameAnswerBox.CenterPos.x - GameAnswerBox.Scale.x / 2))&&
-				(CenterPos.y < (GameAnswerBox.CenterPos.y + GameAnswerBox.Scale.y / 2)) &&
-				(CenterPos.y > (GameAnswerBox.CenterPos.y - GameAnswerBox.Scale.y / 2)))
+			// answerbox 내에 있는지 검사
+			if(IsInAnswerBox(CenterPos))
 			{
 				if(null == GameAnswerBox.FindWord(HoldingWord.Textbox.text))
 				{
 					GameAnswerBox.AddWord(HoldingWord);
 				}
-				var bound = HoldingWord.getBounds();
-				HoldingWord.Symbol.graphics.clear();
-				HoldingWord.Symbol.graphics.setStrokeStyle(0);
-				HoldingWord.Symbol.graphics.beginStroke(White);	
-				HoldingWord.Symbol.graphics.beginFill(White).drawRect(bound.width / 4, bound.height / 4, 200, 50);	
+				WordDesign_InAnswerBox(HoldingWord);
 				}
 			else
 			{
@@ -361,58 +365,24 @@ if (reversed == null) { reversed = false; }
 				}
 				HoldingWord.x = HoldingWord.DefaultPos.x;
 				HoldingWord.y = HoldingWord.DefaultPos.y;
-				HoldingWord.Symbol.graphics.beginFill(BtnBackgroundColor_none).drawRoundRect(0, 0, RectWidth, RectHeight, 10,10);	
+				WordDesign_Initialization(HoldingWord);
 			}
-			//console.log(GameAnswerBox.Words);
+			console.log(GameAnswerBox.Words);
 		
 			HoldingWordPosition = Vector2(0, 0);
 		
 		
 			HoldingWord = null;
 		}
+		
+		
+		function ClearAnswerbox()
+		{
+			GameAnswerBox.ClearWord()
+		}
+		
 		///////////////////////////////////
 		
-		
-		
-		// 버튼 심볼 디자인 생성 */
-		function CreateShape(_StrokeSize, _StrokeColor, _FillColor, Width, Height, RoundSize)
-		{
-			// 버튼 심볼 생성
-			var newShape = new createjs.Shape();
-			newShape.graphics.setStrokeStyle(_StrokeSize);
-			newShape.graphics.beginStroke(_StrokeColor);
-			newShape.graphics.beginFill(_FillColor);
-			newShape.graphics.drawRoundRect(0, 0, Width, Height, RoundSize);
-			newShape.setBounds(0, 0, Width, Height);
-			
-			return newShape;
-			
-		}
-		
-		function CreateTextbox(_text, _style, _size, _font, _color, _align)
-		{
-			var textform = _style + " " + _size+"px" + " "+_font;
-			
-			var textbox = new createjs.Text(_text,  textform, _color);
-			textbox.textAlign = _align;
-			
-			return textbox;
-		}
-		//////////////////////////////////////////
-		
-		
-		
-		// 이미지 리사이징 함수
-		function resizeImage(image, newWidth, newHeight) {
-		  var canvas = document.createElement('canvas');
-		  canvas.width = newWidth;
-		  canvas.height = newHeight;
-		
-		  var context = canvas.getContext('2d');
-		  context.drawImage(image, 0, 0, newWidth, newHeight);
-			
-		  return canvas.toDataURL();
-		}
 		
 		
 		// 이미지 불러오기
