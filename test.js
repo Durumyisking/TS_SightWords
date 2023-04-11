@@ -172,18 +172,8 @@ if (reversed == null) { reversed = false; }
 		}
 		
 		
-		// 초기화
-		function init ()
-		{
-			CreateBackground();
-			CreateAnswerBox();	
-			CreateButtons();
-			CreateWords_Initgame();
-		}
 		
-		
-		
-		// 단어 생성 및 배치
+		// 초기 단어 생성 및 배치
 		function CreateWords_Initgame()
 		{
 		
@@ -213,43 +203,18 @@ if (reversed == null) { reversed = false; }
 		
 			}
 		}
-		//////////////////////////////////////////////
 		
-		
-		function AddWordButton(pos)
+		// 초기화
+		function init ()
 		{
-			var button = new createjs.MovieClip();
-				
-			// 버튼 심볼 생성
-			var buttonSymbol = CreateShape(10, BtnStrokeColor, BtnBackgroundColor_none, RectWidth, RectHeight, 10);
-			
-			// 버튼 안의 텍스트 생성
-			var buttonText = CreateTextbox("버튼", "bold", "50", "Arial", "#000000", "center");
-		
-		
-			buttonText.x = buttonSymbol.getBounds().width / 2;
-			buttonText.y = buttonSymbol.getBounds().height / 2 - 25;		
-			buttonText.text = GetRandomWord();
-		
-			// 버튼 위치 설정
-			button.x = pos.x;
-			button.y = pos.y;
-			
-			button.DefaultPos = new Vector2(button.x, button.y);
-			button.Symbol = buttonSymbol;
-			button.Textbox = buttonText;
-			
-			button.on("mousedown", startDragging); // on은 createjs에서 addeventlistener 간편하게 사용하기 위해 만든거
-			button.on("pressmove", dragButton);
-			button.on("pressup", stopDragging);
-		
-			
-			button.addChild(buttonSymbol);
-			button.addChild(buttonText);
-		
-			// 버튼을 stage에 추가
-			stage.addChild(button);
+			CreateBackground();
+			CreateAnswerBox();	
+			CreateButtons();
+			CreateWords_Initgame();
 		}
+		
+		
+		
 		
 		
 		

@@ -49,6 +49,7 @@ function WordDesign_InAnswerBox(word)
 	var size = new Vector2(100, 30);
 	word.Symbol.graphics.beginFill(White).drawRect((RectWidth / 2) - (size.x / 2), (RectHeight / 2) - (size.y / 2), size.x, size.y);	
 }
+
 function Fade(obj, type, duration)
 {
 	duration *= 1000;

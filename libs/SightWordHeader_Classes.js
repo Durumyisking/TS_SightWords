@@ -17,6 +17,7 @@ class Word
 		
 }
 
+
 class AnswerBox 
 {
 	constructor(_answerBox, _WorldPos ,_CenterPos, _Scale)
@@ -48,10 +49,14 @@ class AnswerBox
 		{				
 			if(type == "correct")
 			{
-				Fade(word[1].Symbol, "out", 0.5);
-				Fade(word[1].Textbox, "out", 0.5);
+				Fade(word[1], "out", 0.5);
+				// Fade(word[1].Textbox, "out", 0.5);
 				
-				
+				// 새로운 단어들 받아와야함
+
+				let newPos = new Vector2(word[1].DefaultPos.x, word[1].DefaultPos.y);
+				console.log(word[1]);
+				AddWordButton(newPos);			
 			}
 			else if(type == "wrong")
 			{
