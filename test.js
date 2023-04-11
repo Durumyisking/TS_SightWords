@@ -95,10 +95,6 @@ if (reversed == null) { reversed = false; }
 		}
 		
 		onResize();
-		var Words = new Array();
-		
-		
-		
 		// 게임 불러오기 */
 		
 		
@@ -182,71 +178,14 @@ if (reversed == null) { reversed = false; }
 			CreateBackground();
 			CreateAnswerBox();	
 			CreateButtons();
-			CreateWords();
+			CreateWords_Initgame();
 		}
 		
-		
-		function CreateBackground()
-		{
-			var bg = Resources.get('background');
-			stage.addChildAt(bg, 0);
-		}
-		
-		function CreateAnswerBox()
-		{
-			var answerbox = Resources.get('answerbox');
-			stage.addChildAt(answerbox, 1);
-			
-			answerbox.scaleX = 1.75;	
-			answerbox.scaleY = 1.5;
-			var bound = answerbox.getBounds();
-			bound.width *= 1.75;
-			bound.height *= 1.5;
-		
-			
-			answerbox.x = (stage.canvas.width / 2) - (bound.width / 2) - 250;
-			answerbox.y = stage.canvas.height / 2 + 200;
-			
-			const answerBoxWorldPos = new Vector2(answerbox.x, answerbox.y);
-			const answerBoxCenterPos = new Vector2(answerbox.x + (bound.width / 2), answerbox.y + (bound.height / 2));
-			const answerBoxscale = new Vector2(bound.width, bound.height);
-		
-			GameAnswerBox = new AnswerBox
-			(
-				answerbox, 
-				answerBoxWorldPos,
-				answerBoxCenterPos, 
-				answerBoxscale
-			);
-		}
-		
-		function CreateButtons()
-		{
-			btnCorrect = Resources.get('correct');
-			btnWrong = Resources.get('wrong');
-			
-			btnCorrect.x = GameAnswerBox.CenterPos.x + GameAnswerBox.Scale.x / 2 + 20;
-			btnCorrect.y = GameAnswerBox.WorldPos.y + 20;
-			
-			var bound = btnCorrect.getBounds();
-			btnWrong.x = btnCorrect.x + bound.width + 20;
-			btnWrong.y = GameAnswerBox.WorldPos.y + 20;
-		
-			
-			stage.addChildAt(btnCorrect, 1);
-			stage.addChildAt(btnWrong, 1);
-			
-			btnWrong.on("pressup", ClearAnswerbox);
-			btnCorrect.on("pressup", Correct);
-		}
 		
 		
 		// 단어 생성 및 배치
-		function CreateWords()
+		function CreateWords_Initgame()
 		{
-			// 버튼 간 간격과 줄 간 간격
-			var buttonSpacing = 20;
-			var lineSpacing = 20;
 		
 			// 2줄에 버튼을 채우기 위한 변수
 			var buttonsPerLine = Math.floor((stage.canvas.width - buttonSpacing) / (RectWidth + buttonSpacing));
@@ -256,38 +195,13 @@ if (reversed == null) { reversed = false; }
 			// 화면 좌측 상단부터 버튼 생성 및 배치
 			for (var i = 0; i < 4 * buttonsPerLine; i++) 
 			{
-				// 버튼 생성
-				var button = new createjs.MovieClip();
 				
-				// 버튼 심볼 생성
-				var buttonSymbol = CreateShape(10, BtnStrokeColor, BtnBackgroundColor_none, RectWidth, RectHeight, 10);
+				var x = buttonSpacing + (RectWidth + buttonSpacing) * currentButton;
+				var y = buttonSpacing + (RectHeight + lineSpacing) * currentLine
 				
-				// 버튼 안의 텍스트 생성
-				var buttonText = CreateTextbox("버튼", "bold", "50", "Arial", "#000000", "center");
-		
-		
-				buttonText.x = buttonSymbol.getBounds().width / 2;
-				buttonText.y = buttonSymbol.getBounds().height / 2 - 25;		
-				buttonText.text = GetRandomWord();
-		
-				// 버튼 위치 설정
-				button.x = buttonSpacing + (RectWidth + buttonSpacing) * currentButton;
-				button.y = buttonSpacing + (RectHeight + lineSpacing) * currentLine;
+				var wordPos = new Vector2(x,y);
+				AddWordButton(wordPos);
 				
-				button.DefaultPos = new Vector2(button.x, button.y);
-				button.Symbol = buttonSymbol;
-				button.Textbox = buttonText;
-				
-				button.on("mousedown", startDragging); // on은 createjs에서 addeventlistener 간편하게 사용하기 위해 만든거
-				button.on("pressmove", dragButton);
-				button.on("pressup", stopDragging);
-			
-				
-				button.addChild(buttonSymbol);
-				button.addChild(buttonText);
-		
-				// 버튼을 stage에 추가
-				stage.addChild(button);
 		
 				// 다음 버튼 위치 설정
 				currentButton++;
@@ -301,92 +215,41 @@ if (reversed == null) { reversed = false; }
 		}
 		//////////////////////////////////////////////
 		
-		function IsInAnswerBox(pos)
+		
+		function AddWordButton(pos)
 		{
-			if((pos.x < (GameAnswerBox.CenterPos.x + GameAnswerBox.Scale.x / 2)) &&
-				(pos.x > (GameAnswerBox.CenterPos.x - GameAnswerBox.Scale.x / 2))&&
-				(pos.y < (GameAnswerBox.CenterPos.y + GameAnswerBox.Scale.y / 2)) &&
-				(pos.y > (GameAnswerBox.CenterPos.y - GameAnswerBox.Scale.y / 2)))
-			{
-				return true;
-			}
-			return false;
-		}
-		
-		
-		
-		// 마우스 이벤트*/
-		
-		var offset;
-		
-		function startDragging(event) {
-		  // 마우스 위치에서 버튼 위치까지의 거리 계산
-		  HoldingWord = event.target;
-		  //HoldingWordPosition = new Vector2(HoldingWord.x, HoldingWord.y);
-		  WordDesign_Clicked(HoldingWord);
+			var button = new createjs.MovieClip();
+				
+			// 버튼 심볼 생성
+			var buttonSymbol = CreateShape(10, BtnStrokeColor, BtnBackgroundColor_none, RectWidth, RectHeight, 10);
 			
-		  
-		  var bounds = HoldingWord.getBounds(); // 객체의 크기 절반만큼 offset 이동하여 단어 중앙으로 오게함
-		  offset = {
-			  x: bounds.width / 2
-			  , y: bounds.height / 2
-			  };
-		  
-		  var parent = event.target.parent;
-		  parent.setChildIndex(event.target, parent.getNumChildren()-1); // 해당 객체의 인덱스를 최상위로 올려준다.
+			// 버튼 안의 텍스트 생성
+			var buttonText = CreateTextbox("버튼", "bold", "50", "Arial", "#000000", "center");
 		
-		}
 		
-		function dragButton(event) {
-		  // 마우스 위치에 따라 버튼 위치 변경
-		  event.target.x = event.stageX - offset.x;
-		  event.target.y = event.stageY - offset.y;
-		}
+			buttonText.x = buttonSymbol.getBounds().width / 2;
+			buttonText.y = buttonSymbol.getBounds().height / 2 - 25;		
+			buttonText.text = GetRandomWord();
 		
-		function stopDragging(event) {
-		  // 버튼 드래그가 끝난 후 실행할 코드
+			// 버튼 위치 설정
+			button.x = pos.x;
+			button.y = pos.y;
 			
-			var CenterPos = new GetCenterPos(HoldingWord);
+			button.DefaultPos = new Vector2(button.x, button.y);
+			button.Symbol = buttonSymbol;
+			button.Textbox = buttonText;
+			
+			button.on("mousedown", startDragging); // on은 createjs에서 addeventlistener 간편하게 사용하기 위해 만든거
+			button.on("pressmove", dragButton);
+			button.on("pressup", stopDragging);
 		
 			
-			// answerbox 내에 있는지 검사
-			if(IsInAnswerBox(CenterPos))
-			{
-				if(null == GameAnswerBox.FindWord(HoldingWord.Textbox.text))
-				{
-					GameAnswerBox.AddWord(HoldingWord);
-				}
-				WordDesign_InAnswerBox(HoldingWord);
-				}
-			else
-			{
-				if(null != GameAnswerBox.FindWord(HoldingWord.Textbox.text))
-				{
-					GameAnswerBox.DeleteWord(HoldingWord);
-				}
-				HoldingWord.x = HoldingWord.DefaultPos.x;
-				HoldingWord.y = HoldingWord.DefaultPos.y;
-				WordDesign_Initialization(HoldingWord);
-			}
-			console.log(GameAnswerBox.Words);
+			button.addChild(buttonSymbol);
+			button.addChild(buttonText);
 		
-			HoldingWordPosition = Vector2(0, 0);
-		
-		
-			HoldingWord = null;
+			// 버튼을 stage에 추가
+			stage.addChild(button);
 		}
-		
-		
-		function ClearAnswerbox()
-		{
-			GameAnswerBox.ClearWord("wrong")
-		}
-		function Correct()
-		{
-			GameAnswerBox.ClearWord("correct");	
-		}
-		
-		///////////////////////////////////
 		
 		
 		
