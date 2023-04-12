@@ -1,23 +1,3 @@
-class Word 
-{
-	constructor(_button,  _WorldPos, _WorldSheetMatrix, _symbol,_textbox)
-	{
-		this.button = _button;
-		this.WorldPos = _WorldPos;		
-		this.WorldSheetMatrix = _WorldSheetMatrix;
-		//this.WordType = _WordType;		
-		this.word = _textbox;
-		
-		this.word.text = GetRandomWord();
-		
-		this.button.addChild(_symbol);
-		this.button.addChild(_textbox);
-
-	}
-		
-}
-
-
 class AnswerBox 
 {
 	constructor(_answerBox, _WorldPos ,_CenterPos, _Scale)
@@ -54,7 +34,7 @@ class AnswerBox
 				// 새로운 단어들 받아와야함
 
 				let newPos = new Vector2(word[1].DefaultPos.x, word[1].DefaultPos.y);
-				console.log(word[1]);
+
 				AddWordButton(newPos);			
 			}
 			else if(type == "wrong")

@@ -21,6 +21,8 @@ function CreateAnswerBox()
 	
 	const answerBoxWorldPos = new Vector2(answerbox.x, answerbox.y);
 	const answerBoxCenterPos = new Vector2(answerbox.x + (bound.width / 2), answerbox.y + (bound.height / 2));
+
+
 	const answerBoxscale = new Vector2(bound.width, bound.height);
 
 	GameAnswerBox = new AnswerBox

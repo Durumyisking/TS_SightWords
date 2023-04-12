@@ -53,6 +53,8 @@ if (reversed == null) { reversed = false; }
 		page_body.style.position = "fixed";
 		
 		var page_canvas = document.getElementsByTagName("canvas")[0];
+		page_canvas.width = 1920;
+		page_canvas.height = 1080;
 		stageWidth = page_canvas.width;
 		stageHeight = page_canvas.height;
 		
@@ -65,6 +67,9 @@ if (reversed == null) { reversed = false; }
 		 viewport.setAttribute('name', 'viewport');
 		 head.appendChild(viewport);
 		}
+		
+		
+		
 		
 		viewport.setAttribute('content', viewportContent);
 		
@@ -178,6 +183,8 @@ if (reversed == null) { reversed = false; }
 		{
 		
 			// 2줄에 버튼을 채우기 위한 변수
+			console.log(stage.canvas.width)
+			console.log(stage.canvas.height)
 			var buttonsPerLine = Math.floor((stage.canvas.width - buttonSpacing) / (RectWidth + buttonSpacing));
 			var currentLine = 0;
 			var currentButton = 0;

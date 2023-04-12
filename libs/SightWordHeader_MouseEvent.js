@@ -9,12 +9,12 @@ function startDragging(event) {
   WordDesign_Clicked(HoldingWord);
 	
   
-  var bounds = HoldingWord.getBounds(); // 객체의 크기 절반만큼 offset 이동하여 단어 중앙으로 오게함
+  var bounds = HoldingWord.Symbol.getBounds(); // 객체의 크기 절반만큼 offset 이동하여 단어 중앙으로 오게함
   offset = {
 	  x: bounds.width / 2
 	  , y: bounds.height / 2
 	  };
-  
+
   var parent = event.target.parent;
   parent.setChildIndex(event.target, parent.getNumChildren()-1); // 해당 객체의 인덱스를 최상위로 올려준다.
 
@@ -40,7 +40,27 @@ function stopDragging(event) {
 			GameAnswerBox.AddWord(HoldingWord);
 		}
 		WordDesign_InAnswerBox(HoldingWord);
+
+
+		var GameAnswerBoxScale = GameAnswerBox.Scale;
+		var wordCount = GameAnswerBox.Words.size;
+
+		
+		var bound = HoldingWord.Symbol.getBounds();
+		HoldingWord.x = StepX -(bound.width / 2) ;
+		HoldingWord.y = GameAnswerBox.CenterPos.y -(bound.height / 2);
+
+
+		for	(let i = 0; i< wordCount; ++i)
+		{
+			var StepX = GameAnswerBox.WorldPos.x + GameAnswerBoxScale.x / (wordCount +  1) ;
+			HoldingWord.x = StepX - (bound.width / 2) ;
 		}
+
+
+
+
+	}
 	else
 	{
 		if(null != GameAnswerBox.FindWord(HoldingWord.Textbox.text))
