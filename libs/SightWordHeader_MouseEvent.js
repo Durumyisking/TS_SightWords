@@ -45,20 +45,24 @@ function stopDragging(event) {
 		var GameAnswerBoxScale = GameAnswerBox.Scale;
 		var wordCount = GameAnswerBox.Words.size;
 
-		
-		var bound = HoldingWord.Symbol.getBounds();
-		HoldingWord.x = StepX -(bound.width / 2) ;
-		HoldingWord.y = GameAnswerBox.CenterPos.y -(bound.height / 2);
+		console.log(GameAnswerBox.Words);
+	
 
-
-		for	(let i = 0; i< wordCount; ++i)
+		for	(let word of GameAnswerBox.Words)
 		{
-			var StepX = GameAnswerBox.WorldPos.x + GameAnswerBoxScale.x / (wordCount +  1) ;
-			HoldingWord.x = StepX - (bound.width / 2) ;
+			// if(CenterPos.x < )
+
+
 		}
 
-
-
+		// var bound = HoldingWord.Symbol.getBounds();
+		// HoldingWord.x = StepX -(bound.width / 2) ;
+		// HoldingWord.y = GameAnswerBox.CenterPos.y -(bound.height / 2);
+		// for	(let i = 0; i< wordCount; ++i)
+		// {
+		// 	var StepX = GameAnswerBox.WorldPos.x + GameAnswerBoxScale.x / (wordCount +  1) ;
+		// 	HoldingWord.x = StepX - (bound.width / 2) ;
+		// }
 
 	}
 	else

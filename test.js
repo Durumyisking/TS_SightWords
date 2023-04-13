@@ -182,9 +182,7 @@ if (reversed == null) { reversed = false; }
 		function CreateWords_Initgame()
 		{
 		
-			// 2줄에 버튼을 채우기 위한 변수
-			console.log(stage.canvas.width)
-			console.log(stage.canvas.height)
+			// n줄에 버튼을 채우기 위한 변수
 			var buttonsPerLine = Math.floor((stage.canvas.width - buttonSpacing) / (RectWidth + buttonSpacing));
 			var currentLine = 0;
 			var currentButton = 0;

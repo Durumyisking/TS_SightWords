@@ -45,21 +45,38 @@ function stopDragging(event) {
 		var GameAnswerBoxScale = GameAnswerBox.Scale;
 		var wordCount = GameAnswerBox.Words.size;
 
-		
-		var bound = HoldingWord.Symbol.getBounds();
-		HoldingWord.x = StepX -(bound.width / 2) ;
-		HoldingWord.y = GameAnswerBox.CenterPos.y -(bound.height / 2);
-
-
-		for	(let i = 0; i< wordCount; ++i)
+	
+		// 처음 들어오는 단어면 단어를 중앙에 위치하고 wordindex 0번에 객체를 넣습니다.
+		if(GameAnswerBox.Words.size == 0)
 		{
 			var StepX = GameAnswerBox.WorldPos.x + GameAnswerBoxScale.x / (wordCount +  1) ;
-			HoldingWord.x = StepX - (bound.width / 2) ;
+			var bound = HoldingWord.Symbol.getBounds();
+			HoldingWord.x = StepX -(bound.width / 2) ;
+			HoldingWord.y = GameAnswerBox.CenterPos.y -(bound.height / 2);
+			GameAnswerBox.WordsIndex[0] = HoldingWord;
+			HoldingWord.index = 0;
 		}
-
-
-
-
+		else
+		{
+			var arrLength = GameAnswerBox.WordsIndex.length;
+			for (let i = 0; i<arrLength; ++i)// wordindex 0번부터 순회함
+			{
+				var word = GameAnswerBox.WordsIndex[i];
+				var wordCenterPos = new GetCenterPos(word);	
+				// 단어들 순회하며 위치비교
+				// 들고있는 단어의 위치가 현재 단어보다 왼쪽에 있으면 break (WordsIndex는 0번이 가장 왼쪽에 있는 단어가 들어갈 것이기 때문에 작동)
+				if(CenterPos.x < wordCenterPos.x)
+				{
+					GameAnswerBox.WordsIndex.splice(word.index, 0, HoldingWord)
+					HoldingWord.index = i;
+					break;
+				}
+			}
+			for (let i = HoldingWord.index + 1; i<arrLength; ++i) // holdingword index 이후의 word의 index 1씩 올려주어야함
+			{
+				++(GameAnswerBox.WordsIndex[i].index);
+			}
+		}
 	}
 	else
 	{
@@ -71,6 +88,35 @@ function stopDragging(event) {
 		HoldingWord.y = HoldingWord.DefaultPos.y;
 		WordDesign_Initialization(HoldingWord);
 	}
+
+	var arrLength = GameAnswerBox.WordsIndex.length;
+	var iRepeat = (arrLength / 3) + 1; // 한줄에 단어 3개씩 넣어보자
+	// index 순서대로 단어 배치
+	for (let i = 0; i < iRepeat; ++i)
+	{
+		let jRepeat;
+		if (i == (iRepeat - 1)) // 마지막 i일때
+		{
+			jRepeat = arrLength % 3;
+		}
+		else
+		{
+			jRepeat = 3
+		}
+
+		for (let j = 0; j < jRepeat; ++j)
+		{
+			var word = GameAnswerBox[i * 3 + j];
+			var bound = word.Symbol.getBounds();
+
+			var StepX = GameAnswerBox.WorldPos.x + GameAnswerBoxScale.x / (jRepeat +  1) ;
+			var StepY = GameAnswerBox.WorldPos.y + GameAnswerBoxScale.y / (iRepeat +  1) ;
+			word.x = StepX * (j + 1) - (bound.width / 2) ;
+			word.y = StepY * (i + 1) -(bound.height / 2);
+
+		}	
+	}
+
 	console.log(GameAnswerBox.Words);
 
 	HoldingWordPosition = Vector2(0, 0);

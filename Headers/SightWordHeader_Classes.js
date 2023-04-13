@@ -7,6 +7,7 @@ class AnswerBox
 		this.CenterPos = _CenterPos;		
 		this.Scale = _Scale;		
 		this.Words = new Map();
+		this.WordsIndex = new Array();
 	}
 
 	AddWord(_button)
