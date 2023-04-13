@@ -44,10 +44,9 @@ function stopDragging(event) {
 
 		var GameAnswerBoxScale = GameAnswerBox.Scale;
 		var wordCount = GameAnswerBox.Words.size;
-
 	
 		// 처음 들어오는 단어면 단어를 중앙에 위치하고 wordindex 0번에 객체를 넣습니다.
-		if(GameAnswerBox.Words.size == 0)
+		if(GameAnswerBox.Words.size == 1)
 		{
 			var StepX = GameAnswerBox.WorldPos.x + GameAnswerBoxScale.x / (wordCount +  1) ;
 			var bound = HoldingWord.Symbol.getBounds();
@@ -89,24 +88,27 @@ function stopDragging(event) {
 		WordDesign_Initialization(HoldingWord);
 	}
 
+	// 단어 추가 및 삭제 끝나면 단어 배치
 	var arrLength = GameAnswerBox.WordsIndex.length;
-	var iRepeat = (arrLength / 3) + 1; // 한줄에 단어 3개씩 넣어보자
+	var iRepeat = Math.floor((arrLength / 4) + 1); // 한줄에 단어 3개씩 넣어보자 소수점 떼야함;
 	// index 순서대로 단어 배치
 	for (let i = 0; i < iRepeat; ++i)
 	{
 		let jRepeat;
 		if (i == (iRepeat - 1)) // 마지막 i일때
 		{
-			jRepeat = arrLength % 3;
+			jRepeat = arrLength % 4;
 		}
 		else
 		{
 			jRepeat = 3
 		}
 
+		console.log("i : " + iRepeat)
+		console.log("j : " + jRepeat)
 		for (let j = 0; j < jRepeat; ++j)
 		{
-			var word = GameAnswerBox[i * 3 + j];
+			var word = GameAnswerBox.WordsIndex[i * 3 + j];
 			var bound = word.Symbol.getBounds();
 
 			var StepX = GameAnswerBox.WorldPos.x + GameAnswerBoxScale.x / (jRepeat +  1) ;

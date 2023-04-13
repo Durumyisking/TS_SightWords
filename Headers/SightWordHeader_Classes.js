@@ -47,6 +47,7 @@ class AnswerBox
 			
 		}
 		this.Words.clear();
+		this.WordsIndex.clear();
 	}
 
 }
