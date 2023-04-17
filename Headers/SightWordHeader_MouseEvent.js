@@ -30,7 +30,6 @@ function stopDragging(event) {
   // 버튼 드래그가 끝난 후 실행할 코드
 	
 	var CenterPos = new GetCenterPos(HoldingWord);
-
 	
 	// answerbox 내에 있는지 검사
 	if(IsInAnswerBox(CenterPos))
@@ -41,65 +40,93 @@ function stopDragging(event) {
 		}
 		WordDesign_InAnswerBox(HoldingWord);
 
+		wordIndexing();
 
-		var GameAnswerBoxScale = GameAnswerBox.Scale;
-		var wordCount = GameAnswerBox.Words.size;
 	
-		// 처음 들어오는 단어면 단어를 중앙에 위치하고 wordindex 0번에 객체를 넣습니다.
-		if(GameAnswerBox.Words.size == 1)
-		{
-			var StepX = GameAnswerBox.WorldPos.x + GameAnswerBoxScale.x / (wordCount +  1) ;
-			var bound = HoldingWord.Symbol.getBounds();
-			HoldingWord.x = StepX -(bound.width / 2) ;
-			HoldingWord.y = GameAnswerBox.CenterPos.y -(bound.height / 2);
-			GameAnswerBox.WordsIndex[0] = HoldingWord;
-			HoldingWord.Index = 0;
-		}
-		else
-		{
-			var arrLength = GameAnswerBox.WordsIndex.length;
-			for (let i = 0; i<arrLength; ++i)// wordindex 0번부터 순회함
-			{
-				var word = GameAnswerBox.WordsIndex[i];
-				var wordCenterPos = new GetCenterPos(word);	
-				// 단어들 순회하며 위치비교
-				// 들고있는 단어의 위치가 현재 단어보다 왼쪽에 있으면 break (WordsIndex는 0번이 가장 왼쪽에 있는 단어가 들어갈 것이기 때문에 작동)
-
-				if(CenterPos.x < wordCenterPos.x)
-				{					
-					GameAnswerBox.WordsIndex.splice(word.Index, 0, HoldingWord)
-					HoldingWord.Index = i;
-					break;
-				}
-
-				// 마지막 순회일때 위에 조건 안거치면 맨 오른쪽에 뒀다는거임 
-				if(i == (arrLength - 1))
-				{
-					HoldingWord.Index = i + 1;
-				}
-			}
-
-			arrLength = GameAnswerBox.WordsIndex.length; // 새로 넣었으니까 갱신해주어야함.
-			
-			for (let i = HoldingWord.Index + 1; i < arrLength; ++i) // holdingword index 이후의 word의 index 1씩 올려주어야함
-			{
-				++(GameAnswerBox.WordsIndex[i].Index);
-				console.log(GameAnswerBox.WordsIndex[i]);
-			}
-
-		}
 	}
 	else //answerbox 밖이면
 	{
 		if(null != GameAnswerBox.FindWord(HoldingWord.Textbox.text))
 		{
 			GameAnswerBox.DeleteWord(HoldingWord);
+			GameAnswerBox.WordsIndex.splice(HoldingWord.Index, 1);
+			organizeWordIndex();
 		}
 		HoldingWord.x = HoldingWord.DefaultPos.x;
 		HoldingWord.y = HoldingWord.DefaultPos.y;
 		WordDesign_Initialization(HoldingWord);
 	}
 
+	wordArrange();
+
+	HoldingWordPosition = Vector2(0, 0);
+	HoldingWord = null;
+}
+
+
+function wordIndexing()
+{
+	// 처음 들어오는 단어면 단어를 중앙에 위치하고 wordindex 0번에 객체를 넣습니다.
+	if(GameAnswerBox.Words.size == 1)
+	{
+		pushFirstWord();
+	}
+	else
+	{
+		// answerbox에 올라오는 두번째 단어부터 여기서 처리됨
+		pushWord();
+	}
+}
+
+function pushFirstWord()
+{
+	var wordCount = GameAnswerBox.Words.size;
+	var StepX = GameAnswerBox.WorldPos.x +  GameAnswerBox.Scale.x / (wordCount +  1) ;
+	var bound = HoldingWord.Symbol.getBounds();
+	HoldingWord.x = StepX -(bound.width / 2) ;
+	HoldingWord.y = GameAnswerBox.CenterPos.y -(bound.height / 2);
+	GameAnswerBox.WordsIndex[0] = HoldingWord;
+	HoldingWord.Index = 0;
+}
+
+function pushWord()
+{
+	var CenterPos = new GetCenterPos(HoldingWord);
+	for (let i = 0; i<GameAnswerBox.WordsIndex.length; ++i)// wordindex 0번부터 순회함
+	{
+		var word = GameAnswerBox.WordsIndex[i];
+		var wordCenterPos = new GetCenterPos(word);	
+		// 단어들 순회하며 위치비교
+		// 들고있는 단어의 위치가 현재 단어보다 왼쪽에 있으면 break (WordsIndex는 0번이 가장 왼쪽에 있는 단어가 들어갈 것이기 때문에 작동)
+
+		if(CenterPos.x < wordCenterPos.x)
+		{					
+			GameAnswerBox.WordsIndex.splice(word.Index, 0, HoldingWord)
+			HoldingWord.Index = i;
+			break;
+		}
+
+		// 마지막 순회일때 위에 조건 안거치면 맨 오른쪽에 뒀다는거임 
+		if(i == (GameAnswerBox.WordsIndex.length - 1))
+		{
+			HoldingWord.Index = i + 1;
+			GameAnswerBox.WordsIndex.push(HoldingWord);
+		}
+	}
+
+	organizeWordIndex();
+}
+
+function organizeWordIndex()
+{
+	for (let i = 0; i < GameAnswerBox.WordsIndex.length; ++i)
+	{
+		GameAnswerBox.WordsIndex[i].Index = i;
+	}
+}
+
+function wordArrange()
+{
 	// 단어 추가 및 삭제 끝나면 단어 배치
 	var arrLength = GameAnswerBox.WordsIndex.length;
 	var iRepeat = Math.floor((arrLength / 4) + 1); // 한줄에 단어 3개씩 넣어보자 소수점 떼야함;
@@ -121,22 +148,15 @@ function stopDragging(event) {
 			var word = GameAnswerBox.WordsIndex[i * 3 + j];
 			var bound = word.Symbol.getBounds();
 
-			var StepX = GameAnswerBox.WorldPos.x + GameAnswerBoxScale.x / (jRepeat +  1) ;
-			var StepY = GameAnswerBox.WorldPos.y + GameAnswerBoxScale.y / (iRepeat +  1) ;
+			var StepX = GameAnswerBox.WorldPos.x +  GameAnswerBox.Scale.x / (jRepeat +  1) ;
+			var StepY = GameAnswerBox.WorldPos.y +  GameAnswerBox.Scale.y / (iRepeat +  1) ;
 			word.x = StepX * (j + 1) - (bound.width / 2) ;
 			word.y = StepY * (i + 1) -(bound.height / 2);
 
 		}	
 	}
 
-
-
-	HoldingWordPosition = Vector2(0, 0);
-
-
-	HoldingWord = null;
 }
-
 
 function ClearAnswerbox()
 {
