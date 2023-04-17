@@ -53,7 +53,7 @@ function stopDragging(event) {
 			HoldingWord.x = StepX -(bound.width / 2) ;
 			HoldingWord.y = GameAnswerBox.CenterPos.y -(bound.height / 2);
 			GameAnswerBox.WordsIndex[0] = HoldingWord;
-			HoldingWord.index = 0;
+			HoldingWord.Index = 0;
 		}
 		else
 		{
@@ -64,20 +64,34 @@ function stopDragging(event) {
 				var wordCenterPos = new GetCenterPos(word);	
 				// 단어들 순회하며 위치비교
 				// 들고있는 단어의 위치가 현재 단어보다 왼쪽에 있으면 break (WordsIndex는 0번이 가장 왼쪽에 있는 단어가 들어갈 것이기 때문에 작동)
+
+				console.log("i : " + i + "\nword : " + word.Textbox.text);
+
 				if(CenterPos.x < wordCenterPos.x)
-				{
-					GameAnswerBox.WordsIndex.splice(word.index, 0, HoldingWord)
-					HoldingWord.index = i;
+				{					
+					GameAnswerBox.WordsIndex.splice(word.Index, 0, HoldingWord)
+					HoldingWord.Index = i;
 					break;
 				}
+
+				// 마지막 순회일때 위에 조건 안거치면 맨 오른쪽에 뒀다는거임 
+				if(i == (arrLength - 1))
+				{
+					HoldingWord.Index = i + 1;
+				}
 			}
-			for (let i = HoldingWord.index + 1; i<arrLength; ++i) // holdingword index 이후의 word의 index 1씩 올려주어야함
+
+			arrLength = GameAnswerBox.WordsIndex.length; // 새로 넣었으니까 갱신해주어야함.
+			
+			for (let i = HoldingWord.Index + 1; i < arrLength; ++i) // holdingword index 이후의 word의 index 1씩 올려주어야함
 			{
-				++(GameAnswerBox.WordsIndex[i].index);
+				++(GameAnswerBox.WordsIndex[i].Index);
+				console.log(GameAnswerBox.WordsIndex[i]);
 			}
+
 		}
 	}
-	else
+	else //answerbox 밖이면
 	{
 		if(null != GameAnswerBox.FindWord(HoldingWord.Textbox.text))
 		{
@@ -104,8 +118,6 @@ function stopDragging(event) {
 			jRepeat = 3
 		}
 
-		console.log("i : " + iRepeat)
-		console.log("j : " + jRepeat)
 		for (let j = 0; j < jRepeat; ++j)
 		{
 			var word = GameAnswerBox.WordsIndex[i * 3 + j];
@@ -119,7 +131,7 @@ function stopDragging(event) {
 		}	
 	}
 
-	console.log(GameAnswerBox.Words);
+
 
 	HoldingWordPosition = Vector2(0, 0);
 
