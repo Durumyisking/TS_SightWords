@@ -64,11 +64,11 @@ function AddWordButton(pos)
 	var buttonSymbol = CreateShape(10, BtnStrokeColor, BtnBackgroundColor_none, RectWidth, RectHeight, 10);
 	
 	// 버튼 안의 텍스트 생성
-	var buttonText = CreateTextbox("버튼", "bold", "50", "Arial", "#000000", "center");
+	var buttonText = CreateTextbox("버튼", "bold", "30", "Arial", "#000000", "center");
 
 
 	buttonText.x = buttonSymbol.getBounds().width / 2;
-	buttonText.y = buttonSymbol.getBounds().height / 2 - 25;		
+	buttonText.y = buttonSymbol.getBounds().height / 2 - 15; // 글씨 크기의 절반을 빼줘야댐		
 	buttonText.text = GetRandomWord();
 
 	// 버튼 위치 설정

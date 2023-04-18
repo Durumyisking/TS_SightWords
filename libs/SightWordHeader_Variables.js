@@ -13,8 +13,10 @@ const BtnBackgroundColor_none = "#FFFF99FF";
 const BtnBackgroundColor_clicked = "#FFCC00FF";
 const BtnStrokeColor = "#33FFCCFF";
 
-const RectWidth = 350;
-const RectHeight = 100;
+const RectWidth = 250;
+const RectHeight = 70;
+const LineCount = 5;
+
 
 // 버튼 간 간격과 줄 간 간격
 const buttonSpacing = 20;
@@ -40,6 +42,9 @@ var ResourceLoadedCount = 0;
 
 var WordNoun = new Array();
 var WordVerb = new Array();
+var WordAdjective = new Array();
+var WordConjunction = new Array();
+var WordPreposition = new Array();
 
 var Words = new Array();
 

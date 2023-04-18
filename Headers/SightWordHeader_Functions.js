@@ -1,26 +1,10 @@
-function Vector2(_x, _y)
-{
-	this.x = _x;
-	this.y = _y;
-}
-
-function GetCenterPos(_obj)
-{
-	var CenterPos = new Vector2(_obj.x, _obj.y);
-	var bounds = _obj.getBounds();
-	CenterPos.x += bounds.width / 2;
-	CenterPos.y += bounds.height / 2;
-	
-	this.x = CenterPos.x;
-	this.y = CenterPos.y;
-}
 
 
 // 랜덤 단어 얻기*/
 
 function GetRandomWord()
 {
-	var WordType = Math.floor(Math.random() * 2);	
+	var WordType = Math.floor(Math.random() * 5);	
 	
 	if(0 == WordType) // verb
 	{		
@@ -29,6 +13,18 @@ function GetRandomWord()
 	else if (1== WordType) // noun
 	{
 		return GetRandomNoun();
+	}
+	else if (2== WordType) // adjective
+	{
+		return GetRandomAdjective();
+	}
+	else if (3== WordType) // conjunction
+	{
+		return GetRandomConjunction();
+	}
+	else if (4== WordType) // preposition
+	{
+		return GetRandomPreposition();
 	}
 	
 }
@@ -51,6 +47,36 @@ function GetRandomNoun()
 	WordNoun.splice(RandomNumber , 1);	
 
 	return noun;
+}
+
+function GetRandomAdjective()
+{
+	var RandomNumber;	
+	RandomNumber = Math.floor(Math.random() * WordAdjective.length);		
+	var Adjective = WordAdjective[RandomNumber];
+	WordAdjective.splice(RandomNumber , 1);	
+
+	return Adjective;
+}
+
+function GetRandomConjunction()
+{
+	var RandomNumber;	
+	RandomNumber = Math.floor(Math.random() * WordConjunction.length);		
+	var Conjunction = WordConjunction[RandomNumber];
+	WordConjunction.splice(RandomNumber , 1);	
+
+	return Conjunction;
+}
+
+function GetRandomPreposition()
+{
+	var RandomNumber;	
+	RandomNumber = Math.floor(Math.random() * WordPreposition.length);		
+	var Preposition = WordPreposition[RandomNumber];
+	WordPreposition.splice(RandomNumber , 1);	
+
+	return Preposition;
 }
 ////////////////////////////////////////
 

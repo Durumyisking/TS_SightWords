@@ -162,6 +162,33 @@ if (reversed == null) { reversed = false; }
 				{
 					WordNoun.push(jsonData[i]);			
 				}
+			
+				// 형용사 단어들 불러옵니다.
+				range = 'D2:D51'; // B2부터 B51까지
+				jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, range });	
+			
+				for(var i=0 ; i<50; ++i)
+				{
+					WordAdjective.push(jsonData[i]);			
+				}
+			
+				// 접속사 단어들 불러옵니다.
+				range = 'E2:E51'; // B2부터 B51까지
+				jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, range });	
+			
+				for(var i=0 ; i<50; ++i)
+				{
+					WordConjunction.push(jsonData[i]);			
+				}
+			
+				// 전치사 단어들 불러옵니다.
+				range = 'F2:F45'; // B2부터 B51까지
+				jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, range });	
+			
+				for(var i=0 ; i<44; ++i)
+				{
+					WordPreposition.push(jsonData[i]);			
+				}
 		
 				// 게임 초기화
 				// word를 비동기로 불러오기 때문에 word 로딩이 완료되기전에 callback이 호출되는걸 방지한다.
@@ -188,7 +215,7 @@ if (reversed == null) { reversed = false; }
 			var currentButton = 0;
 		
 			// 화면 좌측 상단부터 버튼 생성 및 배치
-			for (var i = 0; i < 4 * buttonsPerLine; i++) 
+			for (var i = 0; i < LineCount * buttonsPerLine; i++) 
 			{
 				
 				var x = buttonSpacing + (RectWidth + buttonSpacing) * currentButton;
