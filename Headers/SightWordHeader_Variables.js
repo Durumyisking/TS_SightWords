@@ -10,6 +10,7 @@ const White = "#FFFFFFFF";
 const Transparent = "#FFFFFF00";
 
 const BtnBackgroundColor_none = "#FFFF99FF";
+const BtnBackgroundColor_const = "#FAAC96FF";
 const BtnBackgroundColor_clicked = "#FFCC00FF";
 const BtnStrokeColor = "#33FFCCFF";
 

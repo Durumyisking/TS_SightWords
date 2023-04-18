@@ -31,17 +31,28 @@ class AnswerBox
 			{
 				Fade(word[1], "out", 0.5);
 				
-				// 새로운 단어들 받아와야함
+				if(word[1].Type == "none" )
+				{
+					// 새로운 단어들 받아와야함
+					let newPos = new Vector2(word[1].DefaultPos.x, word[1].DefaultPos.y);
+					AddWordButton(newPos);	// 일반 단어 추가
+				}
 
-				let newPos = new Vector2(word[1].DefaultPos.x, word[1].DefaultPos.y);
-				console.log(word[1]);
-				AddWordButton(newPos);			
+				stage.removeChild(word[1]);
 			}
+			
 			else if(type == "wrong")
 			{
-				word[1].x = word[1].DefaultPos.x;
-				word[1].y = word[1].DefaultPos.y;
-				WordDesign_Initialization(word[1]);
+				if(word[1].Type == "none" )
+				{
+					word[1].x = word[1].DefaultPos.x;
+					word[1].y = word[1].DefaultPos.y;
+					WordDesign_Initialization(word[1]);
+				}
+				else if(word[1].Type == "const" )
+				{
+					stage.removeChild(word[1]);
+				}
 			}
 			
 		}

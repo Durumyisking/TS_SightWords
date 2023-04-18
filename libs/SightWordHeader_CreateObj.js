@@ -93,4 +93,81 @@ function AddWordButton(pos)
 
     Fade(button, "in", 0.3);
     // Fade(word[1].Textbox, "out", 0.5);
+
+	button.Type = "none";
+
+	return button;
+}
+
+function AddWordButton_word(pos, word)
+{
+	var button = new createjs.MovieClip();
+	var buttonSymbol = CreateShape(10, BtnStrokeColor, BtnBackgroundColor_none, RectWidth, RectHeight, 10);
+	var buttonText = CreateTextbox("버튼", "bold", "30", "Arial", "#000000", "center");
+
+
+	buttonText.x = buttonSymbol.getBounds().width / 2;
+	buttonText.y = buttonSymbol.getBounds().height / 2 - 15; // 글씨 크기의 절반을 빼줘야댐		
+	buttonText.text = word;
+
+	// 버튼 위치 설정
+	button.x = pos.x;
+	button.y = pos.y;
+	
+	button.DefaultPos = new Vector2(button.x, button.y);
+	button.Symbol = buttonSymbol;
+	button.Textbox = buttonText;
+	
+	button.on("mousedown", startDragging); // on은 createjs에서 addeventlistener 간편하게 사용하기 위해 만든거
+	button.on("pressmove", dragButton);
+	button.on("pressup", stopDragging);
+
+	
+	button.addChild(buttonSymbol);
+	button.addChild(buttonText);
+    button.alpha = 0;
+
+	stage.addChild(button);
+
+    Fade(button, "in", 0.3);
+
+	button.Type = "none";
+	return button;
+}
+
+
+function AddConstWordButton(pos, word)
+{
+	var button = new createjs.MovieClip();
+	var buttonSymbol = CreateShape(10, BtnStrokeColor, BtnBackgroundColor_const, RectWidth, RectHeight, 10);	
+	var buttonText = CreateTextbox("버튼", "bold", "30", "Arial", "#000000", "center");
+
+
+	buttonText.x = buttonSymbol.getBounds().width / 2;
+	buttonText.y = buttonSymbol.getBounds().height / 2 - 15; 	
+	buttonText.text = word;
+
+	// 버튼 위치 설정
+	button.x = pos.x;
+	button.y = pos.y;
+	
+	button.DefaultPos = new Vector2(button.x, button.y);
+	button.Symbol = buttonSymbol;
+	button.Textbox = buttonText;
+	
+	button.on("mousedown", startDragging_const); 
+	button.on("pressmove", dragButton_const);
+	button.on("pressup", stopDragging_const);
+
+	
+	button.addChild(buttonSymbol);
+	button.addChild(buttonText);
+    button.alpha = 0;
+
+	stage.addChild(button);
+
+    Fade(button, "in", 0.3);
+
+	button.Type = "const";
+	return button;
 }

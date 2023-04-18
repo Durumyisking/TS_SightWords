@@ -215,15 +215,47 @@ if (reversed == null) { reversed = false; }
 			var currentButton = 0;
 		
 			// 화면 좌측 상단부터 버튼 생성 및 배치
-			for (var i = 0; i < LineCount * buttonsPerLine; i++) 
+			for (var i = 0; i < (LineCount + 1) * buttonsPerLine ; i++) 
 			{
 				
 				var x = buttonSpacing + (RectWidth + buttonSpacing) * currentButton;
 				var y = buttonSpacing + (RectHeight + lineSpacing) * currentLine
-				
 				var wordPos = new Vector2(x,y);
-				AddWordButton(wordPos);
 				
+				if(i <  LineCount * buttonsPerLine)
+				{
+					AddWordButton(wordPos);			
+				}
+			
+				else if (i >=  LineCount * buttonsPerLine)
+				{
+					wordPos.y += 10;
+					switch(currentButton)
+					{
+						case 0:
+							AddConstWordButton(wordPos, "i");			
+							break;
+						case 1:
+							AddConstWordButton(wordPos, "you");			
+							break;
+						case 2:
+							AddConstWordButton(wordPos, "he");			
+							break;
+						case 3:
+							AddConstWordButton(wordPos, "she");			
+							break;
+						case 4:
+							AddConstWordButton(wordPos, "we");			
+							break;
+						case 5:
+							AddConstWordButton(wordPos, "a");			
+							break;
+						case 6:
+							AddConstWordButton(wordPos, "the");			
+							break;
+					}
+				}
+		
 		
 				// 다음 버튼 위치 설정
 				currentButton++;
@@ -234,6 +266,8 @@ if (reversed == null) { reversed = false; }
 				}		
 		
 			}
+		
+			
 		}
 		
 		// 초기화
