@@ -60,19 +60,18 @@ function stopDragging(event) {
 	// answerbox 내에 있는지 검사
 	if(IsInAnswerBox(CenterPos))
 	{
-		if(null == GameAnswerBox.FindWord(HoldingWord.Textbox.text))
-		{
+		// if(null == GameAnswerBox.FindWord(HoldingWord.Textbox.text))
+		// {
 			GameAnswerBox.AddWord(HoldingWord);
-		}
+		//}
 		WordDesign_InAnswerBox(HoldingWord);
 		}
 	else
 	{
-		if(null != GameAnswerBox.FindWord(HoldingWord.Textbox.text))
+		if(null != GameAnswerBox.FindWord(HoldingWord))
 		{
 			GameAnswerBox.DeleteWord(HoldingWord);
 		}
-		console.log(HoldingWord.Type);
 		if(HoldingWord.Type == "none")
 		{
 			HoldingWord.x = HoldingWord.DefaultPos.x;
@@ -84,7 +83,6 @@ function stopDragging(event) {
 			stage.removeChild(HoldingWord);
 		}
 	}
-	console.log(GameAnswerBox.Words);
 
 	HoldingWordPosition = Vector2(0, 0);
 
@@ -97,21 +95,22 @@ function stopDragging_const() {
 	
 	if(IsInAnswerBox(CenterPos))
 	{
-		if(null == GameAnswerBox.FindWord(HoldingWord.Textbox.text))
-		{
+		// if(null == GameAnswerBox.FindWord(HoldingWord.Textbox.text))
+		// {
 			GameAnswerBox.AddWord(HoldingWord);
-		}
+		//}
 		WordDesign_InAnswerBox(HoldingWord);
 	}
 	else
 	{
-		if(null != GameAnswerBox.FindWord(HoldingWord.Textbox.text))
+		if(null != GameAnswerBox.FindWord(HoldingWord))
 		{
 			GameAnswerBox.DeleteWord(HoldingWord);
 		}
 		stage.removeChild(HoldingWord);
 	}
  
+	console.log(GameAnswerBox.Words);
 	HoldingWordPosition = Vector2(0, 0);
  
 	HoldingWord = null;

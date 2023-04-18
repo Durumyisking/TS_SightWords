@@ -28,9 +28,7 @@ class AnswerBox
 		for	(let word of this.Words)
 		{				
 			if(type == "correct")
-			{
-				Fade(word[1], "out", 0.5);
-				
+			{				
 				if(word[1].Type == "none" )
 				{
 					// 새로운 단어들 받아와야함

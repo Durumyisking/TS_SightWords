@@ -215,7 +215,7 @@ if (reversed == null) { reversed = false; }
 			var currentButton = 0;
 		
 			// 화면 좌측 상단부터 버튼 생성 및 배치
-			for (var i = 0; i < (LineCount + 1) * buttonsPerLine ; i++) 
+			for (var i = 0; i < (LineCount + 2) * buttonsPerLine ; i++) 
 			{
 				
 				var x = buttonSpacing + (RectWidth + buttonSpacing) * currentButton;
@@ -227,33 +227,50 @@ if (reversed == null) { reversed = false; }
 					AddWordButton(wordPos);			
 				}
 			
-				else if (i >=  LineCount * buttonsPerLine)
+				else if (i >=  LineCount * buttonsPerLine && i <  (LineCount + 1) * buttonsPerLine)
 				{
 					wordPos.y += 10;
 					switch(currentButton)
 					{
-						case 0:
+						case 1:
 							AddConstWordButton(wordPos, "i");			
 							break;
-						case 1:
+						case 2:
 							AddConstWordButton(wordPos, "you");			
 							break;
-						case 2:
+						case 3:
 							AddConstWordButton(wordPos, "he");			
 							break;
-						case 3:
+						case 4:
 							AddConstWordButton(wordPos, "she");			
 							break;
-						case 4:
+						case 5:
 							AddConstWordButton(wordPos, "we");			
 							break;
-						case 5:
+					}
+				
+				}
+				else if (i >=  (LineCount + 1) * buttonsPerLine)
+				{
+					switch(currentButton)
+					{
+						case 1:
+							AddConstWordButton(wordPos, "am");			
+							break;
+						case 2:
+							AddConstWordButton(wordPos, "are");			
+							break;
+						case 3:
+							AddConstWordButton(wordPos, "is");			
+							break;
+						case 4:
 							AddConstWordButton(wordPos, "a");			
 							break;
-						case 6:
+						case 5:
 							AddConstWordButton(wordPos, "the");			
 							break;
 					}
+				
 				}
 		
 		
