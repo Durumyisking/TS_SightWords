@@ -145,49 +145,66 @@ if (reversed == null) { reversed = false; }
 				worksheet = workbook.Sheets[sheetName];
 				
 				// 동사 단어들 불러옵니다
-				var range = 'B2:B51'; // B2부터 B51까지
+				var range = 'B2:B1000'; // B2부터 B51까지
 				var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, range });
-			
-				for(var i=0 ; i<50; ++i)
+				var i = 0;
+				while(true)
 				{
-					WordVerb.push(jsonData[i]);		
+					if(jsonData[i][0] == null)
+						break;
+					WordVerb.push(jsonData[i]);			
+					++i;		
 				}
+		
 			
 			
 				// 명사 단어들 불러옵니다.
-				range = 'C2:C51'; // B2부터 B51까지
+				range = 'C2:C1000'; // B2부터 B51까지
 				jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, range });	
-			
-				for(var i=0 ; i<50; ++i)
+				i = 0;
+				while(true)
 				{
+					if(jsonData[i][0] == null)
+						break;
 					WordNoun.push(jsonData[i]);			
+					++i;		
 				}
 			
-				// 형용사 단어들 불러옵니다.
-				range = 'D2:D51'; // B2부터 B51까지
-				jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, range });	
 			
-				for(var i=0 ; i<50; ++i)
+				// 형용사 단어들 불러옵니다.
+				range = 'D2:D1000'; // B2부터 B51까지
+				jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, range });	
+				i = 0;
+				while(true)
 				{
+					if(jsonData[i][0] == null)
+						break;
 					WordAdjective.push(jsonData[i]);			
+					++i;		
 				}
 			
 				// 접속사 단어들 불러옵니다.
-				range = 'E2:E51'; // B2부터 B51까지
-				jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, range });	
-			
-				for(var i=0 ; i<50; ++i)
+				range = 'E2:E1000'; // B2부터 B51까지
+				jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, range });		
+				i = 0;
+				while(true)
 				{
+					if(jsonData[i][0] == null)
+						break;
 					WordConjunction.push(jsonData[i]);			
+					++i;		
 				}
 			
 				// 전치사 단어들 불러옵니다.
-				range = 'F2:F45'; // B2부터 B51까지
+				range = 'F2:F1000'; // B2부터 B51까지
 				jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, range });	
-			
-				for(var i=0 ; i<44; ++i)
+				i = 0;
+				while(true)
 				{
+					if(jsonData[i][0] == null)
+						break;
 					WordPreposition.push(jsonData[i]);			
+					++i;		
 				}
 		
 				// 게임 초기화
