@@ -60,10 +60,8 @@ function stopDragging(event) {
 	// answerbox 내에 있는지 검사
 	if(IsInAnswerBox(CenterPos))
 	{
-		if(null == GameAnswerBox.FindWord(HoldingWord.Textbox.text))
-		{
-			GameAnswerBox.AddWord(HoldingWord);
-		}
+		console.log("none")
+		GameAnswerBox.AddWord(HoldingWord);
 		WordDesign_InAnswerBox(HoldingWord);
 		}
 	else
@@ -95,10 +93,8 @@ function stopDragging_const() {
 	
 	if(IsInAnswerBox(CenterPos))
 	{
-		if(null == GameAnswerBox.FindWord(HoldingWord.Textbox.text))
-		{
-			GameAnswerBox.AddWord(HoldingWord);
-		}
+		console.log("const")
+		GameAnswerBox.AddWord(HoldingWord);
 		WordDesign_InAnswerBox(HoldingWord);
 	}
 	else

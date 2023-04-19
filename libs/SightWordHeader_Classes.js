@@ -11,7 +11,24 @@ class AnswerBox
 
 	AddWord(_button)
 	{
-		this.Words.set(_button.Textbox.text, _button);
+		var key = _button.Textbox.text;
+		var count = 0;
+		while(true)
+		{
+			if(null == GameAnswerBox.FindWord(key))
+			{
+				break;
+			}
+			else
+			{
+				++count;
+				key = key + count.toString();			
+			}
+
+		}
+		this.Words.set(key, _button);
+
+		console.log(this.Words)
 	}
 	DeleteWord(_button)
 	{
