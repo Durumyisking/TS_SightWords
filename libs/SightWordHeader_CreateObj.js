@@ -1,7 +1,33 @@
 function CreateBackground()
 {
 	var bg = Resources.get('background');
-	stage.addChildAt(bg, 0);
+	stage.addChildAt(bg, 1);
+}
+
+function CreateStartButton()
+{
+	var button = new createjs.MovieClip();
+	var buttonSymbol = CreateShape(10, BtnStrokeColor, BtnBackgroundColor_none, 320, 200, 10);
+	var buttonText = CreateTextbox("START", "bold", "70", "Arial", "#000000", "center");
+
+	buttonText.x = buttonSymbol.getBounds().width / 2;
+	buttonText.y = buttonSymbol.getBounds().height / 2 - 35; // 글씨 크기의 절반을 빼줘야댐		
+
+	// 버튼 위치 설정
+	button.x = ResolutionX / 2 - buttonSymbol.getBounds().width / 2;
+	button.y = ResolutionY / 2 + buttonSymbol.getBounds().height / 2;
+		
+	button.on("pressup", GameStart);
+	
+	button.addChild(buttonSymbol);
+	button.addChild(buttonText);
+
+	button.alpha = 0;
+
+	// 버튼을 stage에 추가
+	stage.addChild(button);
+
+    Fade(button, "in", 0.3);
 }
 
 function CreateAnswerBox()

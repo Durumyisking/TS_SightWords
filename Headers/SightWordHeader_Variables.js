@@ -14,6 +14,8 @@ const BtnBackgroundColor_const = "#FAAC96FF";
 const BtnBackgroundColor_clicked = "#FFCC00FF";
 const BtnStrokeColor = "#33FFCCFF";
 
+const ResolutionX = 1920;
+const ResolutionY = 1080;
 const RectWidth = 250;
 const RectHeight = 70;
 const LineCount = 5;

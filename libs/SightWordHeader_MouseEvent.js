@@ -1,5 +1,11 @@
 // 마우스 이벤트*/
 
+function GameStart (event)
+{
+	Main.gotoAndStop(1);
+	stage.removeChild(event.target);
+}
+
 var offset;
 
 function startDragging(event) {
@@ -60,7 +66,6 @@ function stopDragging(event) {
 	// answerbox 내에 있는지 검사
 	if(IsInAnswerBox(CenterPos))
 	{
-		console.log("none")
 		GameAnswerBox.AddWord(HoldingWord);
 		WordDesign_InAnswerBox(HoldingWord);
 		}
@@ -93,7 +98,6 @@ function stopDragging_const() {
 	
 	if(IsInAnswerBox(CenterPos))
 	{
-		console.log("const")
 		GameAnswerBox.AddWord(HoldingWord);
 		WordDesign_InAnswerBox(HoldingWord);
 	}

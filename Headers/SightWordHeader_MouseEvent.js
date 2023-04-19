@@ -1,5 +1,11 @@
 // 마우스 이벤트*/
 
+function GameStart (event)
+{
+	Main.gotoAndStop(1);
+	stage.removeChild(event.target);
+}
+
 var offset;
 
 function startDragging(event) {
