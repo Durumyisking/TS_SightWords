@@ -2,6 +2,53 @@ function CreateBackground()
 {
 	var bg = Resources.get('background');
 	stage.addChildAt(bg, 0);
+
+// 버튼 심볼을 담을 컨테이너
+var buttonContainer = new createjs.Container();
+stage.addChild(buttonContainer);
+
+// 버튼 심볼의 개수와 간격 설정
+var numButtons = 20;
+var buttonSpacing = 50;
+
+// 버튼 심볼 생성 및 배치
+for (var i = 0; i < numButtons; i++) {
+
+
+	var scaleRatio =  (Math.random() * 3) + 1;
+	var buttonSymbol = CreateShape(10, BtnStrokeColor, BtnBackgroundColor_none, RectWidth / scaleRatio, RectHeight / scaleRatio, 10);
+
+	// 버튼 심볼의 초기 위치 무작위 설정
+	buttonSymbol.x = Math.random() * stage.canvas.width; // 가로 방향 무작위 위치
+	buttonSymbol.y = -Math.random() * (stage.canvas.height + 1000); // 위에서부터 무작위 위치
+	buttonSymbol.rotation = Math.random() * 360; // 무작위로 회전
+
+	buttonContainer.addChild(buttonSymbol);
+
+  // Tween을 사용하여 버튼 심볼을 밑으로 떨어트림 (무한 반복)
+  var duration = 1000 + Math.random() * 1000; // 이동하는데 걸리는 시간을 랜덤으로 설정
+  var delay = Math.random() * 2000; // 시작 딜레이를 랜덤으로 설정
+  createjs.Tween.get(buttonSymbol, { loop: true })
+    .wait(delay) // 시작 딜레이 적용
+    .to({ y: stage.canvas.height + buttonSpacing }, duration, createjs.Ease.linear) // 무작위로 이동, linear 이징 사용
+    .call(function() {
+      // 이동이 완료되면 버튼 심볼을 다시 초기 위치로 되돌림
+      buttonSymbol.x = Math.random() * stage.canvas.width;
+      buttonSymbol.y = -buttonSpacing;
+      buttonSymbol.rotation = Math.random() * 360;
+    }) .addEventListener("change", function(e) {
+		// 버튼 심볼이 화면 밖을 나가면 사라지도록 함
+		if (buttonSymbol.y > stage.canvas.height + buttonSpacing + 200) {
+		  buttonContainer.removeChild(buttonSymbol);
+		}
+	  });
+}
+
+// 특정 이벤트가 발생하기 전까지 배경에 버튼 심볼이 내리는 효과를 계속 유지
+// 예시로 5초 후에 이벤트가 발생한다고 가정하고 setTimeout 함수를 사용하여 5초 후에 이벤트를 처리하는 코드 작성
+	setTimeout(function() {
+	// 이벤트 발생 시 처리할 코드 작성
+	}, 5000);
 }
 
 function CreateTitleLogo()
