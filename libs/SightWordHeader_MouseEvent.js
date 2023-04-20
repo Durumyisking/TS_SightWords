@@ -4,6 +4,7 @@ function GameStart (event)
 {
 	Main.gotoAndStop(1);
 	stage.removeChild(event.target);
+	stage.removeChild(animationContainer);
 }
 
 var offset;

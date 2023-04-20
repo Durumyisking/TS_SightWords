@@ -1,7 +1,71 @@
 function CreateBackground()
 {
 	var bg = Resources.get('background');
-	stage.addChildAt(bg, 1);
+	stage.addChildAt(bg, 0);
+}
+
+function CreateTitleLogo()
+{
+	// 이미지 시퀀스를 담을 컨테이너
+	animationContainer = new createjs.Container();
+
+	// 이미지 시퀀스의 프레임 이미지 파일들의 경로와 파일명 배열
+	var frameImages = [];
+
+	for (var i = 1; i <= 30; i++)
+	{
+		frameImages.push("res/images/title/title" + i + ".png")
+	}
+
+	// 이미지 파일들을 로드할 LoadQueue 객체 생성
+	var loader = new createjs.LoadQueue();
+
+	// 이미지 파일들을 로드 완료된 후 실행될 콜백 함수 등록
+	loader.addEventListener("complete", handleLoadComplete);
+
+	// 이미지 파일들 로드 시작
+	loader.loadManifest(frameImages, true);
+
+	// 이미지 파일들 로드 완료된 후 실행될 콜백 함수
+	function handleLoadComplete() 
+	{
+		// 이미지 시퀀스의 각 프레임 이미지를 Bitmap 객체로 생성하여 컨테이너에 추가
+		for (var i = 0; i < frameImages.length; i++) 
+		{
+			var frameImage = new createjs.Bitmap(loader.getResult(frameImages[i]));
+			frameImage.scaleX = 2;
+			frameImage.scaleY = 2;
+			frameImage.x = ResolutionX / 2 - 676; // 프레임 간의 가로 위치 조절
+			animationContainer.addChild(frameImage); // 컨테이너에 추가
+			frameImage.visible = false; // 모든 이미지를 숨김
+		}
+
+		// 애니메이션 컨테이너를 화면에 추가
+		stage.addChild(animationContainer);
+
+		// 애니메이션 재생
+		var currentFrame = 0;
+		createjs.Ticker.addEventListener("tick", handleTick); // Ticker 이벤트 리스너 등록
+		createjs.Ticker.framerate = 24; // 재생 프레임 속도 설정
+		function handleTick(event) 
+		{
+			// 현재 프레임에 해당하는 이미지만 보이도록 설정
+			for (var i = 0; i < animationContainer.children.length; i++) {
+				animationContainer.children[i].visible = false;
+			}
+			animationContainer.children[currentFrame].visible = true;
+
+			// 다음 프레임으로 이동
+			currentFrame++;
+			if (currentFrame >= frameImages.length) {
+				createjs.Ticker.removeEventListener("tick", handleTick);
+				CreateStartButton();
+			}
+
+			// 화면 업데이트
+			stage.update();
+		}
+	}
 }
 
 function CreateStartButton()

@@ -27,6 +27,8 @@ const lineSpacing = 20;
 
 const Resources = new Map();
 
+var animationContainer;
+
 var btnCorrect;
 var btnWrong;
 

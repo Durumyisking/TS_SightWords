@@ -2,9 +2,7 @@
 
 var p; // shortcut to reference prototypes
 var lib={};var ss={};var img={};
-lib.ssMetadata = [
-		{name:"test_atlas_1", frames: [[0,0,1351,287]]}
-];
+lib.ssMetadata = [];
 
 
 (lib.AnMovieClip = function(){
@@ -25,44 +23,6 @@ lib.ssMetadata = [
 }).prototype = p = new cjs.MovieClip();
 // symbols:
 
-
-
-(lib.logo = function() {
-	this.initialize(ss["test_atlas_1"]);
-	this.gotoAndStop(0);
-}).prototype = p = new cjs.Sprite();
-
-
-
-(lib.logo_1 = function(mode,startPosition,loop,reversed) {
-if (loop == null) { loop = true; }
-if (reversed == null) { reversed = false; }
-	var props = new Object();
-	props.mode = mode;
-	props.startPosition = startPosition;
-	props.labels = {};
-	props.loop = loop;
-	props.reversed = reversed;
-	cjs.MovieClip.apply(this,[props]);
-
-	// timeline functions:
-	this.frame_0 = function() {
-		this.stop();
-	}
-
-	// actions tween:
-	this.timeline.addTween(cjs.Tween.get(this).call(this.frame_0).wait(3));
-
-	// 레이어_1
-	this.instance = new lib.logo();
-	this.instance.setTransform(-681,-114.55,1,1,-2.4426);
-
-	this.timeline.addTween(cjs.Tween.get(this.instance).wait(3));
-
-	this._renderFirstFrame();
-
-}).prototype = p = new cjs.MovieClip();
-p.nominalBounds = new cjs.Rectangle(-681,-172.1,1362,344.29999999999995);
 
 
 // stage content:
@@ -135,7 +95,6 @@ if (reversed == null) { reversed = false; }
 		onResize();
 		Main = this;
 		
-		
 		// 리소스 관리 */
 		function LoadResources()
 		 {
@@ -163,7 +122,6 @@ if (reversed == null) { reversed = false; }
 				}
 			}
 		}
-		
 		
 		// 단어 load
 		function LoadWords (Initcallback)
@@ -252,13 +210,11 @@ if (reversed == null) { reversed = false; }
 			
 			
 		}
-		
 		// 초기화
 		function init ()
 		{
 			CreateBackground();
-			CreateStartButton();
-		
+			CreateTitleLogo();
 		}
 		
 		// 이미지 불러오기
@@ -359,27 +315,21 @@ if (reversed == null) { reversed = false; }
 		}
 		
 		
-		this.stop();
-		
 		init();
 		
 		// stage 업데이트
 		stage.update();
+		
+		this.stop();
 	}
 
 	// actions tween:
 	this.timeline.addTween(cjs.Tween.get(this).call(this.frame_0).wait(1).call(this.frame_1).wait(1));
 
-	// 레이어_2
-	this.instance = new lib.logo_1();
-	this.instance.setTransform(1020.05,511.85);
-
-	this.timeline.addTween(cjs.Tween.get(this.instance).to({_off:true},1).wait(1));
-
 	this._renderFirstFrame();
 
 }).prototype = p = new lib.AnMovieClip();
-p.nominalBounds = new cjs.Rectangle(0,0,1701.1,684.1);
+p.nominalBounds = new cjs.Rectangle(0,0,0,0);
 // library properties:
 lib.properties = {
 	id: '1299523199400343B751879641BC0ED0',
@@ -388,9 +338,7 @@ lib.properties = {
 	fps: 24,
 	color: "#FFFFFF",
 	opacity: 1.00,
-	manifest: [
-		{src:"images/test_atlas_1.png?1681882674964", id:"test_atlas_1"}
-	],
+	manifest: [],
 	preloads: []
 };
 
