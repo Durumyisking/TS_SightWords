@@ -160,23 +160,23 @@ function PlayAnimation(AnimContainer, frameImages ,loop)
 /////////////////////////////
 
 // 위치 및 회전 관련 함수
-function SetRandomPos(Obj, NegativeX, NegativeY, InitiallValueX = 0, InitiallValueY = 0) // stage기준 랜덤위치로 정합니다.
+function SetRandomPos(Obj, NegativeX, NegativeY, InitialValueX = 0, InitialValueY = 0) // stage기준 랜덤위치로 정합니다.
 {
 	if(NegativeX)
 	{
-		Obj.x = (-Math.random() * stage.canvas.width) + InitiallValueX; // -1980 ~ 0 무작위 위치	
+		Obj.x = (-Math.random() * stage.canvas.width) + InitialValueX; // -1980 ~ 0 무작위 위치	
 	}
 	else
 	{
-		Obj.x = (Math.random() * stage.canvas.width) + InitiallValueX; // 0 ~ 1980 무작위 위치	
+		Obj.x = (Math.random() * stage.canvas.width) + InitialValueX; // 0 ~ 1980 무작위 위치	
 	}
 	if(NegativeY)
 	{
-		Obj.y = (-Math.random() * stage.canvas.height) + InitiallValueY; // -1080 ~ 0
+		Obj.y = (-Math.random() * stage.canvas.height) + InitialValueY; // -1080 ~ 0
 	}
 	else
 	{
-		Obj.y = (Math.random() * stage.canvas.height) + InitiallValueY; // 0 ~ 1080	
+		Obj.y = (Math.random() * stage.canvas.height) + InitialValueY; // 0 ~ 1080	
 	}
 
 }
@@ -187,7 +187,27 @@ function SetRandomRotation(Obj , MaxValue = 360)
 }
 
 
-
+function MoveEffect_RandomFall(Obj, durationInital, durationRandom, startDelay)
+{
+	// Tween을 사용하여 버튼 심볼을 밑으로 떨어트림 (무한 반복)
+	var duration = durationInital + Math.random() * durationRandom; // 이동하는데 걸리는 시간을 랜덤으로 설정
+	var delay = Math.random() * startDelay; // 시작 딜레이를 랜덤으로 설정
+	createjs.Tween.get(Obj, { loop: true })
+		.wait(delay) // 시작 딜레이 적용
+		.to({ y: stage.canvas.height + buttonSpacing }, duration, createjs.Ease.linear) // 무작위로 이동, linear 이징 사용 height + spacing 넘어가면 이동 끝
+		.call(function () {
+			// 이동이 완료되면 버튼 심볼을 다시 랜덤위치로부터 시작함
+			SetRandomPos(Obj, false, true);
+			SetRandomRotation(Obj);
+		});
+		// .addEventListener("change", function (e) {
+		// 	// 버튼 심볼이 화면 밖을 나가면 사라지도록 함
+		// 	if (buttonSymbol.y > stage.canvas.height + buttonSpacing + 200) {
+		// 		console.log("ASdf")
+		// 		buttonContainer.removeChild(buttonSymbol);
+		// 	}
+		// });
+}
 
 
 ////////////////////////

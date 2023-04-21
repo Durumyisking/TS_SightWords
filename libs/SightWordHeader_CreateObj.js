@@ -25,24 +25,9 @@ function CreateBackground()
 
 		buttonContainer.addChild(buttonSymbol);
 
-		// Tween을 사용하여 버튼 심볼을 밑으로 떨어트림 (무한 반복)
-		var duration = 1000 + Math.random() * 2000; // 이동하는데 걸리는 시간을 랜덤으로 설정
-		var delay = Math.random() * 3000; // 시작 딜레이를 랜덤으로 설정
-		createjs.Tween.get(buttonSymbol, { loop: true })
-			.wait(delay) // 시작 딜레이 적용
-			.to({ y: stage.canvas.height + buttonSpacing }, duration, createjs.Ease.linear) // 무작위로 이동, linear 이징 사용 height + spacing 넘어가면 이동 끝
-			.call(function () {
-				// 이동이 완료되면 버튼 심볼을 다시 랜덤위치로부터 시작함
-				SetRandomPos(buttonSymbol, false, true);
-				SetRandomRotation(buttonSymbol);
-			});
-			// .addEventListener("change", function (e) {
-			// 	// 버튼 심볼이 화면 밖을 나가면 사라지도록 함
-			// 	if (buttonSymbol.y > stage.canvas.height + buttonSpacing + 200) {
-			// 		console.log("ASdf")
-			// 		buttonContainer.removeChild(buttonSymbol);
-			// 	}
-			// });
+		MoveEffect_RandomFall(buttonSymbol, 1000, 2000, 3000)
+
+
 	}
 
 	// 특정 이벤트가 발생하기 전까지 배경에 버튼 심볼이 내리는 효과를 계속 유지
