@@ -2,9 +2,14 @@
 var stage = new createjs.Stage("canvas");
 
 
-var req = new XMLHttpRequest(); // 비동기 처리를 위한 객체
-req.open("GET", "Word/words.xlsx", true); // 파일 불러오기
-req.responseType = "arraybuffer";
+var reqWord = new XMLHttpRequest(); // 비동기 처리를 위한 객체
+reqWord.open("GET", "res/word/words.xlsx", true); // 파일 불러오기
+reqWord.responseType = "arraybuffer";
+
+// var reqSentence = new XMLHttpRequest(); // 비동기 처리를 위한 객체
+// reqSentence.open("GET", "res/sentence/words.xlsx", true); // 파일 불러오기
+// reqSentence.responseType = "arraybuffer";
+
 
 const White = "#FFFFFFFF";
 const Transparent = "#FFFFFF00";
@@ -28,6 +33,8 @@ const lineSpacing = 20;
 const Resources = new Map();
 
 var TitleAnimationContainer;
+var FallingButtonContainer;
+
 
 var btnCorrect;
 var btnWrong;

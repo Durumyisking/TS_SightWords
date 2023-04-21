@@ -6,12 +6,14 @@ function CreateBackground()
 	stage.addChildAt(bg, 0);
 
 	// 버튼 심볼을 담을 컨테이너
-	var buttonContainer = new createjs.Container();
-	stage.addChild(buttonContainer);
+	FallingButtonContainer = new createjs.Container();
+	stage.addChild(FallingButtonContainer);
 
 	// 버튼 심볼의 개수와 간격 설정
 	var numButtons = 30;
 	var buttonSpacing = 100;
+
+	FallingButtonContainer.numButtons = 30;
 
 	// 버튼 심볼 생성 및 배치
 	for (var i = 0; i < numButtons; i++) 
@@ -20,12 +22,12 @@ function CreateBackground()
 		var buttonSymbol = CreateShape(10, BtnStrokeColor, BtnBackgroundColor_none, RectWidth / scaleRatio, RectHeight / scaleRatio, 10);
 
 		// 버튼 심볼의 초기 위치 무작위 설정
-		SetRandomPos(buttonSymbol, false, true);
+		SetRandomPos(buttonSymbol, false, true, 0, -200);
 		SetRandomRotation(buttonSymbol);
 
-		buttonContainer.addChild(buttonSymbol);
+		FallingButtonContainer.addChild(buttonSymbol);
 
-		MoveEffect_RandomFall(buttonSymbol, 1000, 2000, 3000)
+		MoveEffect_RandomFall(buttonSymbol, 1000, 2000, 3000, buttonSpacing)
 
 
 	}

@@ -4,7 +4,15 @@ function GameStart (event)
 {
 	Main.gotoAndStop(1);
 	stage.removeChild(event.target);
-	stage.removeChild(animationContainer);
+	stage.removeChild(TitleAnimationContainer);
+	console.log(FallingButtonContainer);
+
+	for (var i = FallingButtonContainer.numButtons - 1; i >= 0; i--) 
+	{
+		FallingButtonContainer.removeChild(FallingButtonContainer.children[i]);
+		stage.removeChild(FallingButtonContainer.children[i]);
+	}
+	stage.removeChild(FallingButtonContainer);
 }
 
 var offset;

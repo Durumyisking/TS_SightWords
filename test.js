@@ -126,9 +126,9 @@ if (reversed == null) { reversed = false; }
 		// 단어 load
 		function LoadWords (Initcallback)
 		{
-			req.onload = function() { // 파일 불러오기 끝났을때 실행되는 함수
+			reqWord.onload = function() { // 파일 불러오기 끝났을때 실행되는 함수
 				 
-				data = new Uint8Array(req.response);
+				data = new Uint8Array(reqWord.response);
 				workbook = XLSX.read(data, { type: "array" });
 		
 				// 첫 번째 워크시트(액셀 하단탭의 그것)를 선택
@@ -206,7 +206,7 @@ if (reversed == null) { reversed = false; }
 				}
 			};
 		
-			req.send(); // 파일을 다시 불러오도록 요청한다 (이후에 재사용 위해) (일단 남겨둠)
+			reqWord.send(); // 파일을 다시 불러오도록 요청한다 (이후에 재사용 위해) (일단 남겨둠)
 			
 			
 		}
