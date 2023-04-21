@@ -108,3 +108,86 @@ function IsInAnswerBox(pos)
 	return false;
 }
 
+///////////////////////////
+
+// 애니메이션 관련 함수
+
+function LoadSequence(frameImages, path, size)
+{
+	for (var i = 1; i <= size; i++)
+	{
+		frameImages.push(path + i + ".png")
+	}
+}
+
+
+function PlayAnimation(AnimContainer, frameImages ,loop)
+{
+	var currentFrame = 0;
+	createjs.Ticker.addEventListener("tick", handleTick); // Ticker 이벤트 리스너 등록
+	createjs.Ticker.framerate = 24; // 재생 프레임 속도 설정
+	function handleTick(event) 
+	{
+		// 현재 프레임에 해당하는 이미지만 보이도록 설정
+		for (var i = 0; i < AnimContainer.children.length; i++) {
+			AnimContainer.children[i].visible = false;
+		}
+		AnimContainer.children[currentFrame].visible = true;
+
+		// 다음 프레임으로 이동
+		currentFrame++;
+		if (currentFrame >= frameImages.length) {
+
+			if(loop)
+			{
+				currentFrame = 0;
+			}
+			else
+			{
+				createjs.Ticker.removeEventListener("tick", handleTick);
+				CreateStartButton();	
+			}
+		}
+
+		// 화면 업데이트
+		stage.update();
+	}
+
+
+}
+
+
+/////////////////////////////
+
+// 위치 및 회전 관련 함수
+function SetRandomPos(Obj, NegativeX, NegativeY, InitiallValueX = 0, InitiallValueY = 0) // stage기준 랜덤위치로 정합니다.
+{
+	if(NegativeX)
+	{
+		Obj.x = (-Math.random() * stage.canvas.width) + InitiallValueX; // -1980 ~ 0 무작위 위치	
+	}
+	else
+	{
+		Obj.x = (Math.random() * stage.canvas.width) + InitiallValueX; // 0 ~ 1980 무작위 위치	
+	}
+	if(NegativeY)
+	{
+		Obj.y = (-Math.random() * stage.canvas.height) + InitiallValueY; // -1080 ~ 0
+	}
+	else
+	{
+		Obj.y = (Math.random() * stage.canvas.height) + InitiallValueY; // 0 ~ 1080	
+	}
+
+}
+
+function SetRandomRotation(Obj , MaxValue = 360)
+{
+	Obj.rotation = Math.random() * MaxValue; // MaxValue 내의 각도로 무작위로 회전
+}
+
+
+
+
+
+////////////////////////
