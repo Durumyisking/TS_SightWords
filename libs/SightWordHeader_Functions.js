@@ -200,13 +200,7 @@ function MoveEffect_RandomFall(Obj, durationInital, durationRandom, startDelay, 
 			SetRandomPos(Obj, false, true, 0, -200);
 			SetRandomRotation(Obj);
 		});
-		// .addEventListener("change", function (e) {
-		// 	// 버튼 심볼이 화면 밖을 나가면 사라지도록 함
-		// 	if (buttonSymbol.y > stage.canvas.height + buttonSpacing + 200) {
-		// 		console.log("ASdf")
-		// 		buttonContainer.removeChild(buttonSymbol);
-		// 	}
-		// });
+
 }
 
 

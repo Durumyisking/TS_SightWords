@@ -5,14 +5,19 @@ function GameStart (event)
 	Main.gotoAndStop(1);
 	stage.removeChild(event.target);
 	stage.removeChild(TitleAnimationContainer);
-	console.log(FallingButtonContainer);
-
+	
 	for (var i = FallingButtonContainer.numButtons - 1; i >= 0; i--) 
 	{
-		FallingButtonContainer.removeChild(FallingButtonContainer.children[i]);
-		stage.removeChild(FallingButtonContainer.children[i]);
+		var button = FallingButtonContainer.getChildAt(i);
+		createjs.Tween.removeTweens(button);
+		FallingButtonContainer.removeChild(button);
+		button.removeAllEventListeners();
+		button.visible = false;
+		console.log(button);
+		button = null;
 	}
 	stage.removeChild(FallingButtonContainer);
+
 }
 
 var offset;

@@ -210,6 +210,9 @@ if (reversed == null) { reversed = false; }
 			
 			
 		}
+		
+		
+		
 		// 초기화
 		function init ()
 		{
@@ -308,7 +311,6 @@ if (reversed == null) { reversed = false; }
 		// 초기화
 		function init ()
 		{
-			CreateBackground();
 			CreateAnswerBox();	
 			CreateButtons();
 			CreateWords_Initgame();
