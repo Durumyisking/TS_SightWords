@@ -13,7 +13,6 @@ function GameStart (event)
 		FallingButtonContainer.removeChild(button);
 		button.removeAllEventListeners();
 		button.visible = false;
-		console.log(button);
 		button = null;
 	}
 	stage.removeChild(FallingButtonContainer);

@@ -96,12 +96,27 @@ if (reversed == null) { reversed = false; }
 		Main = this;
 		
 		// 리소스 관리 */
-		function LoadResources()
+		function LoadObjectImages()
 		 {
 			AddResource('background', "res/images/sky.png");
 			AddResource('answerbox', "res/images/answerbox.png");	
 			AddResource('correct', "res/images/correct.png");	
 			AddResource('wrong', "res/images/wrong.png");	
+			 
+			LoadSentenceImage();
+		}
+		
+		function LoadSentenceImage()
+		{
+				for(var i = 0; i<SentenceImages.length; ++i)
+			{
+				var key = SentenceImages[i][0];
+		//		key = key.replace(".png", "");
+				var path = SentenceImages[i][0];
+				path = "res/sentence/image/" + path;
+		
+				AddResource(key, path);	
+			}
 		}
 		
 		function AddResource(_key, _path, LoadWordscallback)
@@ -112,6 +127,7 @@ if (reversed == null) { reversed = false; }
 			bitmap = new createjs.Bitmap(_path);
 			bitmap.image.onload = onLoadComplete;
 			Resources.set(_key, bitmap);
+				
 			
 			function onLoadComplete() 
 			{	
@@ -212,6 +228,43 @@ if (reversed == null) { reversed = false; }
 		}
 		
 		
+		// 문장 load
+		function LoadSentence (LoadImagecallback)
+		{
+			reqSentence.onload = function() { // 파일 불러오기 끝났을때 실행되는 함수
+				 
+				data = new Uint8Array(reqSentence.response);
+				workbook = XLSX.read(data, { type: "array" });
+		
+				// 첫 번째 워크시트(액셀 하단탭의 그것)를 선택
+				sheetName = workbook.SheetNames[0];
+				worksheet = workbook.Sheets[sheetName];
+				
+				// 동사 단어들 불러옵니다
+				var range = 'B1:B1000'; // B2부터 B51까지
+				var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, range });
+				var i = 0;
+				while(true)
+				{
+					if(jsonData[i][0] == null)
+						break;
+					SentenceImages.push(jsonData[i]);		
+					++SentenceCount;
+					++i;		
+				}
+			
+				if (typeof LoadImagecallback === 'function') 
+				{
+					LoadImagecallback();
+				}
+				
+			};
+		
+			reqSentence.send(); // 파일을 다시 불러오도록 요청한다 (이후에 재사용 위해) (일단 남겨둠)
+			
+			
+		}
+		
 		
 		// 초기화
 		function init ()
@@ -221,7 +274,7 @@ if (reversed == null) { reversed = false; }
 		}
 		
 		// 이미지 불러오기
-		LoadResources();
+		LoadSentence(LoadObjectImages);
 		
 		this.stop();
 	}
@@ -314,6 +367,7 @@ if (reversed == null) { reversed = false; }
 			CreateAnswerBox();	
 			CreateButtons();
 			CreateWords_Initgame();
+			AddSentenceImage();
 		}
 		
 		

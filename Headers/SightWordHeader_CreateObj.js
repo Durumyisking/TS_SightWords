@@ -265,3 +265,38 @@ function AddConstWordButton(pos, word) {
 	button.Type = "const";
 	return button;
 }
+
+
+
+function AddSentenceImage()
+{
+	var RandomNumber = getRandomNumberInRange(0, SentenceCount - 1);
+	var RandomSentence =  SentenceImages[RandomNumber];
+	var image = Resources.get(RandomSentence[0]);
+
+
+	CurrentSentence = RandomSentence[0].replace(".png", "");
+
+	image.scaleX = 1.5;
+	image.scaleY = 1.5;
+	image.x = 50;
+	image.y = GameAnswerBox.WorldPos.y - 250;
+
+	stage.addChild(image);
+}
+
+function AddCuttentSentenceWord()
+{
+	const parsedArray = getParsedString(CurrentSentence, "_");
+
+
+	for(var i = 0; i < parsedArray.length; ++i)
+	{
+		var RandomX = getRandomNumberInRange(0, 6);
+		var RandomY = getRandomNumberInRange(0, 4);
+	
+		var pos = new Vector2(RandomX, RandomY);
+	
+		AddWordButton_word(pos, parsedArray[i]);
+	}
+}
