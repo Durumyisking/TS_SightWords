@@ -168,8 +168,8 @@ function AddWordButton(pos) {
 	buttonText.text = GetRandomWord();
 
 	// 버튼 위치 설정
-	button.x = pos.x;
-	button.y = pos.y;
+	button.x = GetButtonPos(pos).x;
+	button.y = GetButtonPos(pos).y;
 
 	button.DefaultPos = new Vector2(button.x, button.y);
 	button.Symbol = buttonSymbol;
@@ -206,8 +206,8 @@ function AddWordButton_word(pos, word) {
 	buttonText.text = word;
 
 	// 버튼 위치 설정
-	button.x = pos.x;
-	button.y = pos.y;
+	button.x = GetButtonPos(pos).x;
+	button.y = GetButtonPos(pos).y;
 
 	button.DefaultPos = new Vector2(button.x, button.y);
 	button.Symbol = buttonSymbol;
@@ -242,8 +242,8 @@ function AddConstWordButton(pos, word) {
 	buttonText.text = word;
 
 	// 버튼 위치 설정
-	button.x = pos.x;
-	button.y = pos.y;
+	button.x = GetButtonPos(pos).x;
+	button.y = GetButtonPos(pos).y;
 
 	button.DefaultPos = new Vector2(button.x, button.y);
 	button.Symbol = buttonSymbol;
@@ -283,13 +283,17 @@ function AddSentenceImage()
 	image.y = GameAnswerBox.WorldPos.y - 250;
 
 	stage.addChild(image);
+
+	Fade(image, "in", 0.3);
+
+	AddCuttentSentenceWord();
 }
 
 function AddCuttentSentenceWord()
 {
 	const parsedArray = getParsedString(CurrentSentence, "_");
 
-
+	// 랜덤한 위치를 받아와서 그곳에 문장의 문자 추가
 	for(var i = 0; i < parsedArray.length; ++i)
 	{
 		var RandomX = getRandomNumberInRange(0, 6);
@@ -298,5 +302,88 @@ function AddCuttentSentenceWord()
 		var pos = new Vector2(RandomX, RandomY);
 	
 		AddWordButton_word(pos, parsedArray[i]);
+	}
+}
+
+
+
+
+// 초기 단어 생성 및 배치
+function CreateWords_Initgame()
+{
+
+	// n줄에 버튼을 채우기 위한 변수
+	var buttonsPerLine = Math.floor((stage.canvas.width - buttonSpacing) / (RectWidth + buttonSpacing));
+	var currentLine = 0;
+	var currentButton = 0;
+
+	// 화면 좌측 상단부터 버튼 생성 및 배치
+	for (var i = 0; i < (LineCount + 2) * buttonsPerLine ; i++) 
+	{
+		
+		var x = currentButton;
+		var y = currentLine
+		var wordPos = new Vector2(x,y);
+		
+		if(i <  LineCount * buttonsPerLine)
+		{
+			AddWordButton(wordPos);			
+		}
+	
+		// 상용 단어 추가
+		else if (i >=  LineCount * buttonsPerLine && i <  (LineCount + 1) * buttonsPerLine)
+		{
+			switch(currentButton)
+			{
+				case 1:
+					AddConstWordButton(wordPos, "i");			
+					break;
+				case 2:
+					AddConstWordButton(wordPos, "you");			
+					break;
+				case 3:
+					AddConstWordButton(wordPos, "he");			
+					break;
+				case 4:
+					AddConstWordButton(wordPos, "she");			
+					break;
+				case 5:
+					AddConstWordButton(wordPos, "we");			
+					break;
+			}
+		
+		}
+		else if (i >=  (LineCount + 1) * buttonsPerLine)
+		{
+			switch(currentButton)
+			{
+				case 1:
+					AddConstWordButton(wordPos, "am");			
+					break;
+				case 2:
+					AddConstWordButton(wordPos, "are");			
+					break;
+				case 3:
+					AddConstWordButton(wordPos, "is");			
+					break;
+				case 4:
+					AddConstWordButton(wordPos, "a");			
+					break;
+				case 5:
+					AddConstWordButton(wordPos, "the");			
+					break;
+			}
+		
+		}
+
+
+		// 다음 버튼 위치 설정
+		currentButton++;
+		if (currentButton >= buttonsPerLine) 
+		{
+			currentLine++;
+			currentButton = 0;
+		}		
+
 	}
 }

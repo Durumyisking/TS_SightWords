@@ -204,6 +204,25 @@ function MoveEffect_RandomFall(Obj, durationInital, durationRandom, startDelay, 
 }
 
 
+
+function GetButtonPos(grid)
+{
+	var x = buttonSpacing + (RectWidth + buttonSpacing) * grid.x;
+	var y = buttonSpacing + (RectHeight + lineSpacing) * grid.y;
+	var pos = new Vector2(x, y);
+	return pos;
+}
+
+function GetButtonGrid(pos)
+{
+	var x = Math.floor((pos.x - buttonSpacing) / (RectWidth + buttonSpacing)); 
+	var y = Math.floor((pos.y - buttonSpacing) / (RectHeight + lineSpacing)); 
+	var grid = new Vector2(x, y);
+	return grid;
+}
+
+
+
 ////////////유틸////////////
 
 function getRandomNumberInRange(min, max) 

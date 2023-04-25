@@ -49,7 +49,8 @@ class AnswerBox
 				if(word[1].Type == "none" )
 				{
 					// 새로운 단어들 받아와야함
-					let newPos = new Vector2(word[1].DefaultPos.x, word[1].DefaultPos.y);
+					let newPos = GetButtonGrid(word[1].DefaultPos);
+
 					AddWordButton(newPos);	// 일반 단어 추가
 				}
 
