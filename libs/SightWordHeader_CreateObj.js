@@ -153,7 +153,7 @@ function CreateButtons() {
 }
 
 
-function AddWordButton(pos) {
+function AddWordButton(gridPos) {
 	var button = new createjs.MovieClip();
 
 	// 버튼 심볼 생성
@@ -162,15 +162,15 @@ function AddWordButton(pos) {
 	// 버튼 안의 텍스트 생성
 	var buttonText = CreateTextbox("버튼", "bold", "30", "Arial", "#000000", "center");
 
-
 	buttonText.x = buttonSymbol.getBounds().width / 2;
 	buttonText.y = buttonSymbol.getBounds().height / 2 - 15; // 글씨 크기의 절반을 빼줘야댐		
-	buttonText.text = GetRandomWord();
+	buttonText.text = SetRandomWord(buttonText);
 
 	// 버튼 위치 설정
-	button.x = GetButtonPos(pos).x;
-	button.y = GetButtonPos(pos).y;
+	button.x = GetButtonPos(gridPos).x;
+	button.y = GetButtonPos(gridPos).y;
 
+	button.Grid = new Vector2(gridPos.x, gridPos.y);
 	button.DefaultPos = new Vector2(button.x, button.y);
 	button.Symbol = buttonSymbol;
 	button.Textbox = buttonText;
@@ -191,24 +191,25 @@ function AddWordButton(pos) {
 	// Fade(word[1].Textbox, "out", 0.5);
 
 	button.Type = "none";
+	GameWords.push(button);
 
 	return button;
 }
 
-function AddWordButton_word(pos, word) {
+function AddWordButton_word(gridPos, word) {
 	var button = new createjs.MovieClip();
 	var buttonSymbol = CreateShape(10, BtnStrokeColor, BtnBackgroundColor_none, RectWidth, RectHeight, 10);
 	var buttonText = CreateTextbox("버튼", "bold", "30", "Arial", "#000000", "center");
-
 
 	buttonText.x = buttonSymbol.getBounds().width / 2;
 	buttonText.y = buttonSymbol.getBounds().height / 2 - 15; // 글씨 크기의 절반을 빼줘야댐		
 	buttonText.text = word;
 
 	// 버튼 위치 설정
-	button.x = GetButtonPos(pos).x;
-	button.y = GetButtonPos(pos).y;
+	button.x = GetButtonPos(gridPos).x;
+	button.y = GetButtonPos(gridPos).y;
 
+	button.Grid = new Vector2(gridPos.x, gridPos.y);
 	button.DefaultPos = new Vector2(button.x, button.y);
 	button.Symbol = buttonSymbol;
 	button.Textbox = buttonText;
@@ -231,7 +232,7 @@ function AddWordButton_word(pos, word) {
 }
 
 
-function AddConstWordButton(pos, word) {
+function AddConstWordButton(gridPos, word) {
 	var button = new createjs.MovieClip();
 	var buttonSymbol = CreateShape(10, BtnStrokeColor, BtnBackgroundColor_const, RectWidth, RectHeight, 10);
 	var buttonText = CreateTextbox("버튼", "bold", "30", "Arial", "#000000", "center");
@@ -242,9 +243,10 @@ function AddConstWordButton(pos, word) {
 	buttonText.text = word;
 
 	// 버튼 위치 설정
-	button.x = GetButtonPos(pos).x;
-	button.y = GetButtonPos(pos).y;
+	button.x = GetButtonPos(gridPos).x;
+	button.y = GetButtonPos(gridPos).y;
 
+	button.Grid = new Vector2(gridPos.x, gridPos.y);
 	button.DefaultPos = new Vector2(button.x, button.y);
 	button.Symbol = buttonSymbol;
 	button.Textbox = buttonText;
@@ -274,8 +276,8 @@ function AddSentenceImage()
 	var RandomSentence =  SentenceImages[RandomNumber];
 	var image = Resources.get(RandomSentence[0]);
 
-
-	CurrentSentence = RandomSentence[0].replace(".png", "");
+	--SentenceCount;
+	SentenceImages.splice(RandomNumber, 1);
 
 	image.scaleX = 1.5;
 	image.scaleY = 1.5;
@@ -284,12 +286,15 @@ function AddSentenceImage()
 
 	stage.addChild(image);
 
+	CurrentSentence = RandomSentence[0].replace(".png", "");
+	CurrentSentenceImage = image;
+
 	Fade(image, "in", 0.3);
 
-	AddCuttentSentenceWord();
+	AddCurrentSentenceWord();
 }
 
-function AddCuttentSentenceWord()
+function AddCurrentSentenceWord()
 {
 	const parsedArray = getParsedString(CurrentSentence, "_");
 
@@ -300,6 +305,16 @@ function AddCuttentSentenceWord()
 		var RandomY = getRandomNumberInRange(0, 4);
 	
 		var pos = new Vector2(RandomX, RandomY);
+
+		for(var j =0; j<GameWords.length; ++j)
+		{
+			var check = (GameWords[j].Grid.x == pos.x) && (GameWords[j].Grid.y == pos.y)
+			if(check)
+			{
+				stage.removeChild(GameWords[j]);
+				RepushWord(GameWords[j].Textbox);
+			}			
+		}
 	
 		AddWordButton_word(pos, parsedArray[i]);
 	}
@@ -375,15 +390,12 @@ function CreateWords_Initgame()
 			}
 		
 		}
-
-
 		// 다음 버튼 위치 설정
 		currentButton++;
 		if (currentButton >= buttonsPerLine) 
 		{
 			currentLine++;
 			currentButton = 0;
-		}		
-
+		}
 	}
 }

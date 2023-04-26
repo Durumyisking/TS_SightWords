@@ -2,31 +2,59 @@
 
 // 랜덤 단어 얻기*/
 
-function GetRandomWord()
+function SetRandomWord(Textbox)
 {
 	var WordType = Math.floor(Math.random() * 5);	
 	
 	if(0 == WordType) // verb
 	{		
+		Textbox.Type = "verb";
 		return GetRandomVerb();
 	}
 	else if (1== WordType) // noun
 	{
+		Textbox.Type = "noun";
 		return GetRandomNoun();
 	}
 	else if (2== WordType) // adjective
 	{
+		Textbox.Type = "adjective";
 		return GetRandomAdjective();
 	}
 	else if (3== WordType) // conjunction
 	{
+		Textbox.Type = "conjunction";
 		return GetRandomConjunction();
 	}
 	else if (4== WordType) // preposition
 	{
+		Textbox.Type = "preposition";
 		return GetRandomPreposition();
+	}	
+}
+
+function RepushWord(Textbox)
+{
+	switch(Textbox.Type)
+	{
+		case "verb":
+			WordVerb.push(Textbox.text);
+			break;
+		case "noun":
+			WordNoun.push(Textbox.text);
+			break;
+		case "adjective":
+			WordAdjective.push(Textbox.text);
+			break;
+		case "conjunction":
+			WordConjunction.push(Textbox.text);
+			break;
+		case "preposition":
+			WordPreposition.push(Textbox.text);
+			break;			
+		default:
+			break;
 	}
-	
 }
 
 function GetRandomVerb()
@@ -77,6 +105,33 @@ function GetRandomPreposition()
 	WordPreposition.splice(RandomNumber , 1);	
 
 	return Preposition;
+}
+
+
+function CorrectOperate(word)
+{
+	if(word[1].Type == "none" )
+	{
+		// 새로운 단어들 받아와야함
+		let newPos = GetButtonGrid(word[1].DefaultPos);
+		AddWordButton(newPos);	// 일반 단어 추가
+	}
+
+	stage.removeChild(word[1]);
+}
+
+function WrongOperate(word)
+{
+	if(word[1].Type == "none" )
+	{
+		word[1].x = word[1].DefaultPos.x;
+		word[1].y = word[1].DefaultPos.y;
+		WordDesign_Initialization(word[1]);
+	}
+	else if(word[1].Type == "const" )
+	{
+		stage.removeChild(word[1]);
+	}
 }
 ////////////////////////////////////////
 
@@ -221,21 +276,4 @@ function GetButtonGrid(pos)
 	return grid;
 }
 
-
-
-////////////유틸////////////
-
-function getRandomNumberInRange(min, max) 
-{
-	return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function getParsedString(string, delimiter)
-{
-	// 문자열을 구분자(delimiter)를 기준으로 분리하여 배열에 저장
-	const parsedArray = string.split(delimiter);
-	console.log(parsedArray); // ["It", "is", "rainy"]
-
-	return parsedArray;
-}
 

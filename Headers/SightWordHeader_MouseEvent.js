@@ -123,7 +123,6 @@ function stopDragging_const() {
 		stage.removeChild(HoldingWord);
 	}
  
-	console.log(GameAnswerBox.Words);
 	HoldingWordPosition = Vector2(0, 0);
  
 	HoldingWord = null;

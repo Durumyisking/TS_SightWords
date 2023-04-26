@@ -28,7 +28,6 @@ class AnswerBox
 		}
 		this.Words.set(key, _button);
 
-		console.log(this.Words)
 	}
 	DeleteWord(_button)
 	{
@@ -46,32 +45,21 @@ class AnswerBox
 		{				
 			if(type == "correct")
 			{				
-				if(word[1].Type == "none" )
-				{
-					// 새로운 단어들 받아와야함
-					let newPos = GetButtonGrid(word[1].DefaultPos);
-					console.log(word[1].DefaultPos);
-					console.log(newPos);
-					AddWordButton(newPos);	// 일반 단어 추가
-				}
-
-				stage.removeChild(word[1]);
+				CorrectOperate(word);
 			}
 			
 			else if(type == "wrong")
 			{
-				if(word[1].Type == "none" )
-				{
-					word[1].x = word[1].DefaultPos.x;
-					word[1].y = word[1].DefaultPos.y;
-					WordDesign_Initialization(word[1]);
-				}
-				else if(word[1].Type == "const" )
-				{
-					stage.removeChild(word[1]);
-				}
+				WrongOperate(word);
 			}
 			
+		}
+		if(type == "correct")
+		{				
+			CurrentSentence = "";
+			stage.removeChild(CurrentSentenceImage);
+			CurrentSentenceImage = null;
+			AddSentenceImage();
 		}
 		this.Words.clear();
 	}

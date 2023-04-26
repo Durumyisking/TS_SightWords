@@ -34,6 +34,7 @@ const Resources = new Map();
 
 let SentenceCount = 0;
 let CurrentSentence = "";
+let CurrentSentenceImage = null;
 
 var TitleAnimationContainer;
 var FallingButtonContainer;
@@ -58,14 +59,14 @@ var SentenceImages = new Array();
 var Sentences = new Array();
 
 
-var WordNoun = new Array();
 var WordVerb = new Array();
+var WordNoun = new Array();
 var WordAdjective = new Array();
 var WordConjunction = new Array();
 var WordPreposition = new Array();
 
 
 
-var Words = new Array();
+var GameWords = new Array();
 
 var GameAnswerBox;
