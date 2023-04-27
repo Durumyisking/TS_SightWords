@@ -64,3 +64,18 @@ function Fade(obj, type, duration)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+
+
+// 이미지 리사이징 함수
+function resizeImage(image, newWidth, newHeight) {
+	var canvas = document.createElement('canvas');
+	canvas.width = newWidth;
+	canvas.height = newHeight;
+  
+	var context = canvas.getContext('2d');
+	context.drawImage(image, 0, 0, newWidth, newHeight);
+	  
+	return canvas.toDataURL();
+  }
+
+  ///////////////////////////

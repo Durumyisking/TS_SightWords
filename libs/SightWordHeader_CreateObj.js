@@ -39,7 +39,8 @@ function CreateBackground()
 	}, 5000);
 }
 
-function CreateTitleLogo() {
+function CreateTitleLogo() // 내부 함수화 필요
+{
 	// 이미지 시퀀스를 담을 컨테이너
 	TitleAnimationContainer = new createjs.Container();
 
@@ -164,7 +165,7 @@ function AddWordButton(gridPos) {
 
 	buttonText.x = buttonSymbol.getBounds().width / 2;
 	buttonText.y = buttonSymbol.getBounds().height / 2 - 15; // 글씨 크기의 절반을 빼줘야댐		
-	buttonText.text = SetRandomWord(buttonText);
+	buttonText.text = SetRandomWord(buttonText)[0];
 
 	// 버튼 위치 설정
 	button.x = GetButtonPos(gridPos).x;

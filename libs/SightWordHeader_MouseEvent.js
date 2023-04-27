@@ -134,7 +134,42 @@ function ClearAnswerbox()
 }
 function Correct()
 {
-	GameAnswerBox.ClearWord("correct");	
+	// 정답 체크
+	// answerbox내 단어들을 배열에 담는다.
+	var wordsVector = new Array();
+	
+	// map 순회
+	GameAnswerBox.Words.forEach((value) => {
+		wordsVector.push(value);
+	  });
+	  
+	//  Answerbox 내의 객체들 위치 비교
+	for (var i = 0; i < wordsVector.length; ++i)
+	{
+		for (var j = i + 1; j < wordsVector.length; ++j)
+		{
+			var iPos = new Vector2(wordsVector[i].x, wordsVector[i].y);
+			var jPos = new Vector2(wordsVector[j].x, wordsVector[j].y);
+			
+			// 우선은 X값만 비교
+			if(iPos.x > jPos.x)
+			{
+				swap(wordsVector[i], wordsVector[j]);
+			}
+		}
+	}
+
+	console.log("===========");
+	for (var i = 0; i < wordsVector.length; ++i)
+	{
+		console.log(wordsVector[i].Textbox.text);
+	}
+	console.log("===========");
+
+	// 배열내 단어 _로 이어서 문장생성
+
+	if(true)
+		GameAnswerBox.ClearWord("correct");	
 }
 
 ///////////////////////////////////
