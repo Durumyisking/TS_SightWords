@@ -208,7 +208,6 @@ function SortWordsByPosition(Words)
 			if(iPos.x > jPos.x)
 			{
 				swap(Words, i, j);
-
 			}
 		}
 	}

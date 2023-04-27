@@ -19,8 +19,6 @@ function swap(Arr ,IdxA, IdxB)
 	var Temp = Arr[IdxA];
 	Arr[IdxA] = Arr[IdxB];
 	Arr[IdxB] = Temp;
-
-	console.log(Arr);
 }
 /////////////////////////////
 
