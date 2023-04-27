@@ -159,17 +159,34 @@ function Correct()
 		}
 	}
 
-	console.log("===========");
+	var answerSentence = "";
+	console.log(wordsVector)
+	// 배열내 단어 _로 이어서 문장생성
 	for (var i = 0; i < wordsVector.length; ++i)
 	{
-		console.log(wordsVector[i].Textbox.text);
+		answerSentence += wordsVector[i].Textbox.text;
+		// 배열 내 마지막 word면
+		if(i == (wordsVector.length - 1))
+		{
+			break;
+		}
+		answerSentence+= "_"
 	}
-	console.log("===========");
 
-	// 배열내 단어 _로 이어서 문장생성
+	console.log("===========AnswerBox Sentence===========");
+	console.log("StudentAnswer  : " + answerSentence);
+	console.log("	Answer		: " + CurrentSentence + "\n");
+	console.log("========================================");
 
-	if(true)
+
+	if(answerSentence === CurrentSentence)
+	{
 		GameAnswerBox.ClearWord("correct");	
+	}
+	else
+	{
+		GameAnswerBox.ClearWord("wrong");	
+	}
 }
 
 ///////////////////////////////////
