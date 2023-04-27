@@ -14,11 +14,13 @@ function getParsedString(string, delimiter)
 	return parsedArray;
 }
 
-function swap(ObjA, ObjB)
+function swap(Arr ,IdxA, IdxB)
 {
-	var Temp = ObjA;
-	ObjA = ObjB;
-	ObjB = Temp;
+	var Temp = Arr[IdxA];
+	Arr[IdxA] = Arr[IdxB];
+	Arr[IdxB] = Temp;
+
+	console.log(Arr);
 }
 /////////////////////////////
 

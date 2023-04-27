@@ -207,7 +207,7 @@ function SortWordsByPosition(Words)
 			// 우선은 X값만 비교
 			if(iPos.x > jPos.x)
 			{
-				swap(Words[i], Words[j]);
+				swap(Words, i, j);
 			}
 		}
 	}
