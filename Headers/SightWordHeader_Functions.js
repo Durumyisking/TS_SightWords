@@ -180,7 +180,6 @@ function PlayAnimation(AnimContainer, frameImages ,loop)
 
 }
 
-  
 function IsInAnswerBox(pos)
 {
 	if((pos.x < (GameAnswerBox.CenterPos.x + GameAnswerBox.Scale.x / 2)) &&
@@ -193,6 +192,53 @@ function IsInAnswerBox(pos)
 	return false;
 }
 
+
+
+function SortWordsByPosition(Words)
+{
+	//  Answerbox 내의 객체들 위치 비교
+	for (var i = 0; i < Words.length; ++i)
+	{
+		for (var j = i + 1; j < Words.length; ++j)
+		{
+			var iPos = new Vector2(Words[i].x, Words[i].y);
+			var jPos = new Vector2(Words[j].x, Words[j].y);
+			
+			// 우선은 X값만 비교
+			if(iPos.x > jPos.x)
+			{
+				swap(Words[i], Words[j]);
+			}
+		}
+	}
+}
+
+function MakeSentence(Words)
+{
+	var answerSentence = "";
+
+	// 배열내 단어 _로 이어서 문장생성
+	for (var i = 0; i < Words.length; ++i)
+	{
+		answerSentence += Words[i].Textbox.text;
+		// 배열 내 마지막 word면
+		if(i == (Words.length - 1))
+		{
+			break;
+		}
+		answerSentence+= "_"
+	}
+	return answerSentence;
+}
+
+
+function PrintAnswer_LOG(StudentAnswer)
+{
+	console.log("===========AnswerBox Sentence===========");
+	console.log("StudentAnswer  : " + StudentAnswer);
+	console.log("    Answer     : " + CurrentSentence);
+	console.log("========================================");
+}
 /////////////////////////////
 
 

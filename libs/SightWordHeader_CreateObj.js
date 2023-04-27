@@ -192,6 +192,7 @@ function AddWordButton(gridPos) {
 	// Fade(word[1].Textbox, "out", 0.5);
 
 	button.Type = "none";
+	button.InAnswerBox = false;
 	GameWords.push(button);
 
 	return button;
@@ -229,6 +230,8 @@ function AddWordButton_word(gridPos, word) {
 	Fade(button, "in", 0.3);
 
 	button.Type = "none";
+	button.InAnswerBox = false;
+	
 	return button;
 }
 
@@ -266,6 +269,8 @@ function AddConstWordButton(gridPos, word) {
 	Fade(button, "in", 0.3);
 
 	button.Type = "const";
+	button.InAnswerBox = false;
+	
 	return button;
 }
 

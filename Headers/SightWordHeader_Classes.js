@@ -42,7 +42,9 @@ class AnswerBox
 	ClearWord(type)
 	{
 		for	(let word of this.Words)
-		{				
+		{	
+			
+			word[1].InAnswerBox = false;
 			if(type == "correct")
 			{				
 				CorrectOperate(word);
@@ -55,7 +57,7 @@ class AnswerBox
 			
 		}
 		if(type == "correct")
-		{				
+		{	
 			CurrentSentence = "";
 			stage.removeChild(CurrentSentenceImage);
 			CurrentSentenceImage = null;
